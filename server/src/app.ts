@@ -17,8 +17,10 @@ const defaultClientDist = path.resolve(currentDir, '../..', 'client', 'dist');
 
 export function createApp() {
   const app = express();
-  const allowedOrigins = (process.env.CLIENT_ORIGINS ?? 'http://localhost:8080')
-    .split(',')
+  const allowedOrigins = [
+    ...(process.env.CLIENT_ORIGINS ?? 'http://localhost:8080').split(','),
+    process.env.RENDER_EXTERNAL_URL ?? '',
+  ]
     .map((origin) => origin.trim())
     .filter(Boolean);
 
@@ -26,11 +28,16 @@ export function createApp() {
   app.disable('x-powered-by');
   // Disable strict default CSP when serving PixiJS WebGL + Google Fonts + SVG assets
   app.use(helmet({ contentSecurityPolicy: false }));
-  app.use(cors({
-    origin(origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
-      return callback(new Error('CORS origin is not allowed'));
-    },
+  app.use(cors((request, callback) => {
+    const origin = request.header('origin');
+    const host = request.get('host');
+    const sameOrigin = Boolean(
+      origin && host && (origin === `${request.protocol}://${host}` || origin === `https://${host}`),
+    );
+    if (!origin || sameOrigin || allowedOrigins.includes(origin)) {
+      return callback(null, { origin: true });
+    }
+    return callback(new Error('CORS origin is not allowed'));
   }));
   app.use(express.json({ limit: '10kb', strict: true }));
 
