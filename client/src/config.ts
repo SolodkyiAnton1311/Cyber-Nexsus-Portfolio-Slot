@@ -20,3 +20,35 @@ export const FRAME_BOUNDS = {
   stageScale: 0.92,
   stageOffsetY: -15,
 } as const;
+
+/** Layout coordinates for Top & Bottom HUD on the 1600x900 stage. */
+export const HUD_LAYOUT = {
+  topY: 54,
+  balancePanelX: 1180,
+  balancePanelWidth: 340,
+  balancePanelHeight: 72,
+  coinOffsetX: -136,
+  coinSize: 52,
+  infoBtnX: 1410,
+  infoBtnSize: 64,
+
+  dockX: STAGE_WIDTH / 2,
+  dockY: 836,
+  dockWidth: 1200,
+  dockHeight: 104,
+  btnMinusX: 266,
+  betBoxX: 374,
+  betBoxWidth: 144,
+  betBoxHeight: 56,
+  btnPlusX: 482,
+  btnSmallSize: 56,
+  btnMaxBetX: 558,
+  btnMaxBetWidth: 78,
+  btnMaxBetHeight: 56,
+  winPanelX: 858,
+  winPanelWidth: 496,
+  winPanelHeight: 68,
+  btnSpinX: 1238,
+  btnSpinWidth: 236,
+  btnSpinHeight: 82,
+} as const;

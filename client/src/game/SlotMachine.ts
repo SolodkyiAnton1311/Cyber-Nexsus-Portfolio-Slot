@@ -1,10 +1,12 @@
-import { Container, Sprite } from 'pixi.js';
+import { Container, Graphics, Sprite } from 'pixi.js';
 import type { GameAssets } from '../assets';
 import { FRAME_BOUNDS } from '../config';
 import type { SlotConfigResponse } from '../types/api';
+import { Reel } from './Reel';
 
 export class SlotMachine extends Container {
-  public readonly reelsLayer = new Container();
+  private readonly reelsLayer = new Container();
+  private readonly reels: Reel[] = [];
 
   private readonly columns: number;
   private readonly rows: number;
@@ -25,7 +27,31 @@ export class SlotMachine extends Container {
     const frame = new Sprite(assets.machine.reelFrame);
     this.addChild(frame);
 
+    const mask = new Graphics()
+    .rect(
+      FRAME_BOUNDS.windowX,
+      FRAME_BOUNDS.windowY,
+     FRAME_BOUNDS.windowWidth,
+      FRAME_BOUNDS.windowHeight,
+    )
+    .fill(0xffffff);
+    this.addChild(mask);
+    this.reelsLayer.mask = mask;
     this.addChild(this.reelsLayer);
+
+    for (let col = 0; col < this.columns; col += 1) {
+      const reel = new Reel(
+        config.reelStrips[col],
+        assets,
+        this.rows,
+        this.colWidth,
+        this.rowHeight,
+      );
+      reel.x = FRAME_BOUNDS.windowX + col * this.colStep;
+      reel.y = FRAME_BOUNDS.windowY;
+      this.reelsLayer.addChild(reel);
+      this.reels.push(reel);
+    }
 
     for (let i = 0; i < this.columns - 1; i += 1) {
       const divider = new Sprite(assets.machine.reelDivider);
@@ -53,5 +79,11 @@ export class SlotMachine extends Container {
     this.addChild(rightBadge);
 
     this.pivot.set(FRAME_BOUNDS.width / 2, FRAME_BOUNDS.height / 2);
+  }
+
+  public setStops(stops: readonly number[]): void {
+    for (let col = 0; col < this.reels.length; col += 1) {
+      this.reels[col].setStop(stops[col]);
+    }
   }
 }

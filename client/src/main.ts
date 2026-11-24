@@ -2,6 +2,7 @@ import { Application, Container, Sprite } from 'pixi.js';
 import { fetchConfig } from './api/slotApi';
 import { loadAssets } from './assets';
 import { FRAME_BOUNDS, STAGE_HEIGHT, STAGE_WIDTH } from './config';
+import { Meta } from './game/Meta';
 import { SlotMachine } from './game/SlotMachine';
 
 function fitCanvas(canvas: HTMLCanvasElement): void {
@@ -43,9 +44,10 @@ async function bootstrap(): Promise<void> {
   machine.position.set(STAGE_WIDTH / 2, STAGE_HEIGHT / 2 + FRAME_BOUNDS.stageOffsetY);
   machine.scale.set(FRAME_BOUNDS.stageScale);
   world.addChild(machine);
-  
-  // 2. 5x3 Reels container with Graphics mask (using config.reelStrips & assets.symbols)
-  // 3. Bottom HUD (panelBottomDock, -, bet, +, maxBet, panelWin, btnSpin) & Top HUD (balance)
+
+  const meta = new Meta(assets);
+  world.addChild(meta);
+    // 3. Bottom HUD (panelBottomDock, -, bet, +, maxBet, panelWin, btnSpin) & Top HUD (balance)
   // 4. Spin flow: call requestSpin(bet) -> animate reels to response.stops -> highlight response.wins
 }
 
