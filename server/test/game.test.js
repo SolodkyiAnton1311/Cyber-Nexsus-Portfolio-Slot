@@ -44,9 +44,9 @@ test('config describes the approved 5×3 game and ten paylines', () => {
   assert.equal(SymbolId.H2, 2);
   assert.equal(SymbolId.Scatter, 12);
   assert.deepEqual(PAYTABLE_COMBINATION_COUNTS, [3, 4, 5]);
-  assert.deepEqual(PAYTABLE[SymbolId.H1], [184, 612, 2447]);
-  assert.deepEqual(PAYTABLE[SymbolId.M1], [80, 275, 1040]);
-  assert.deepEqual(PAYTABLE[SymbolId.L1], [31, 110, 427]);
+  assert.deepEqual(PAYTABLE[SymbolId.H1], [150, 600, 2500]);
+  assert.deepEqual(PAYTABLE[SymbolId.M1], [75, 300, 1000]);
+  assert.deepEqual(PAYTABLE[SymbolId.L1], [30, 120, 500]);
   assert.deepEqual(WAGER_CONFIG, {
     minLineBet: 1,
     maxLineBet: 10_000,
@@ -124,7 +124,7 @@ test('Scatter awards are 5, 10, or 15 free games and count anywhere', () => {
   assert.equal(evaluateBoard(board, 10).freeGamesAwarded, 5);
 });
 
-test('a paid spin resolves the awarded free games without wagers or retriggers', async () => {
+test('a paid spin resolves awarded free games without wagers and supports retriggers', async () => {
   let result;
   for (let attempt = 0; attempt < 200_000; attempt += 1) {
     result = await runSpin(10);
@@ -133,23 +133,30 @@ test('a paid spin resolves the awarded free games without wagers or retriggers',
   assert.ok(result.freeGamesAwarded > 0, 'expected a free-games trigger');
   assert.equal(result.stops.length, 5);
 
+  const retriggered = result.freeGameResults.reduce((sum, fg) => sum + fg.freeGamesAwarded, 0);
   assert.ok(result.scatterCount >= 3);
-  assert.equal(result.freeGameResults.length, result.freeGamesAwarded);
+  assert.equal(result.freeGameResults.length, result.freeGamesAwarded + retriggered);
   assert.equal(result.totalBet, 100);
   assert.equal(result.payout, result.baseGamePayout + result.freeGameResults.reduce((sum, freeGame) => sum + freeGame.payout, 0));
   assert.equal(result.net, result.payout - 100);
   assert.ok(result.freeGameResults.every((freeGame) => freeGame.totalBet === 0));
-  assert.ok(result.freeGameResults.every((freeGame) => freeGame.freeGamesAwarded === 0));
 
-  const freeRound = evaluateBoard(result.freeGameResults[0].board, 10, true);
+  // Verify 3 Scatters during a Free Game award +5 additional Free Games
+  const retriggerBoard = Array.from({ length: 3 }, () => Array(5).fill(SymbolId.L1));
+  retriggerBoard[0][0] = SymbolId.Scatter;
+  retriggerBoard[1][2] = SymbolId.Scatter;
+  retriggerBoard[2][4] = SymbolId.Scatter;
+  const freeRound = evaluateBoard(retriggerBoard, 10, true);
   assert.equal(freeRound.totalBet, 0);
   assert.equal(freeRound.net, freeRound.payout);
-  assert.equal(freeRound.freeGamesAwarded, 0);
+  assert.equal(freeRound.freeGamesAwarded, 5);
 });
 
-test('the approved reel weights produce approximately 96.00% total RTP', () => {
+test('the approved reel weights produce approximately 96.10% total RTP with retriggers', () => {
   const rtp = calculateTheoreticalRtp();
-  assert.ok(Math.abs(rtp.baseGameRtp - 0.9291455617) < 1e-9, `base RTP ${rtp.baseGameRtp}`);
-  assert.ok(Math.abs(rtp.expectedFreeGames - 0.0332580735) < 1e-10, `expected free games ${rtp.expectedFreeGames}`);
-  assert.ok(Math.abs(rtp.totalRtp - 0.9600471531) < 1e-9, `total RTP ${rtp.totalRtp}`);
+  const singleSpinFg = 0.0332580735;
+  const expectedFgWithRetriggers = singleSpinFg / (1 - singleSpinFg);
+  assert.ok(Math.abs(rtp.baseGameRtp - 0.9290766280) < 1e-9, `base RTP ${rtp.baseGameRtp}`);
+  assert.ok(Math.abs(rtp.expectedFreeGames - expectedFgWithRetriggers) < 1e-9, `expected free games ${rtp.expectedFreeGames}`);
+  assert.ok(Math.abs(rtp.totalRtp - 0.9290766280 * (1 + expectedFgWithRetriggers)) < 1e-9, `total RTP ${rtp.totalRtp}`);
 });

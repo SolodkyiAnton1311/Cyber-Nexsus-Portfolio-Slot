@@ -151,3 +151,12 @@ export interface SpinResult extends SpinRoundResult {
 export interface SpinRequest {
   bet: number;
 }
+
+export enum CheatMode {
+  H1Win = 'h1_win',
+  H2Win = 'h2_win',
+  WildWin = 'wild_win',
+  Scatter3 = 'scatter_3',
+  Scatter4 = 'scatter_4',
+  Scatter5 = 'scatter_5',
+}

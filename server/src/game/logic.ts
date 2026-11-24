@@ -13,6 +13,7 @@ import {
   WAGER_CONFIG,
 } from './value.js';
 import {
+  CheatMode,
   SymbolId,
   SymbolTier,
   type Board,
@@ -98,11 +99,11 @@ export function evaluateBoard(board: readonly (readonly SymbolId[])[], lineBet: 
     totalBet,
     net: payout - totalBet,
     scatterCount,
-    freeGamesAwarded: isFreeGame ? 0 : freeGamesAward(scatterCount),
+    freeGamesAwarded: freeGamesAward(scatterCount),
   };
 }
 
-/** Exact return for a single line, including the Scatter-triggered free-game expectation. */
+/** Exact return for a single line, including Scatter-triggered Free Games with retriggers. */
 export function calculateTheoreticalRtp(): { baseGameRtp: number; expectedFreeGames: number; totalRtp: number } {
   const symbolCounts = REEL_STRIPS.map((reel) => {
     const counts = new Map<SymbolId, number>();
@@ -127,12 +128,14 @@ export function calculateTheoreticalRtp(): { baseGameRtp: number; expectedFreeGa
 
   const baseGameRtp = weightedLineMultiplier / STOPS_PER_REEL ** COLUMNS;
   const scatterProbability = 0.09;
-  let expectedFreeGames = 0;
+  let singleSpinExpectedFg = 0;
   for (let scatterCount = 3; scatterCount <= 5; scatterCount += 1) {
     const combinations = [1, 5, 10, 10, 5, 1][scatterCount];
     const probability = combinations * scatterProbability ** scatterCount * (1 - scatterProbability) ** (5 - scatterCount);
-    expectedFreeGames += probability * freeGamesAward(scatterCount);
+    singleSpinExpectedFg += probability * freeGamesAward(scatterCount);
   }
+  // With retriggers enabled, total expected Free Games per paid spin is E1 / (1 - E1)
+  const expectedFreeGames = singleSpinExpectedFg / (1 - singleSpinExpectedFg);
 
   return {
     baseGameRtp,
@@ -160,20 +163,93 @@ export function generateStops(): number[] {
   return Array.from({ length: COLUMNS }, () => randomInt(STOPS_PER_REEL));
 }
 
-function resolveSpin(bet: number, isFreeGame: boolean): SpinResult {
+/** Generates reel stops that place Scatters on the exact target columns (and none on other columns). */
+function generateScatterStops(scatterCols: readonly number[]): number[] {
+  const scatterSet = new Set(scatterCols);
+  return REEL_STRIPS.map((reel, col) => {
+    const validStops: number[] = [];
+    for (let stop = 0; stop < STOPS_PER_REEL; stop += 1) {
+      let hasScatter = false;
+      for (let row = 0; row < ROWS; row += 1) {
+        if (reel[(stop + row) % STOPS_PER_REEL] === SymbolId.Scatter) {
+          hasScatter = true;
+          break;
+        }
+      }
+      if (scatterSet.has(col) ? hasScatter : !hasScatter) {
+        validStops.push(stop);
+      }
+    }
+    return validStops[randomInt(validStops.length)];
+  });
+}
+
+/** Generates reel stops that place `target` on the middle row (payline #1) of every reel. */
+function generateLineWinStops(target: SymbolId): number[] {
+  const middleRow = 1;
+  return REEL_STRIPS.map((reel) => {
+    const validStops: number[] = [];
+    for (let stop = 0; stop < STOPS_PER_REEL; stop += 1) {
+      if (reel[(stop + middleRow) % STOPS_PER_REEL] === target) {
+        validStops.push(stop);
+      }
+    }
+    return validStops[randomInt(validStops.length)];
+  });
+}
+
+/**
+ * Generates reel stops that place exactly 3 Scatters on reels 1, 3, and 5 (cols 0, 2, 4)
+ * in random visible rows, with no Scatters on reels 2 and 4 (cols 1, 3).
+ */
+export function generateBonusBuyStops(): number[] {
+  return generateScatterStops([0, 2, 4]);
+}
+
+export function generateCheatStops(cheat: CheatMode): number[] {
+  switch (cheat) {
+    case CheatMode.H1Win:
+      return generateLineWinStops(SymbolId.H1);
+    case CheatMode.H2Win:
+      return generateLineWinStops(SymbolId.H2);
+    case CheatMode.WildWin:
+      return generateLineWinStops(SymbolId.Wild);
+    case CheatMode.Scatter3:
+      return generateScatterStops([0, 2, 4]);
+    case CheatMode.Scatter4:
+      return generateScatterStops([0, 1, 2, 3]);
+    case CheatMode.Scatter5:
+      return generateScatterStops([0, 1, 2, 3, 4]);
+  }
+}
+
+function resolveSpin(
+  bet: number,
+  isFreeGame: boolean,
+  forcedStops?: number[],
+  wagerMultiplier = 1,
+): SpinResult {
   if (!Number.isInteger(bet) || bet < SLOT_CONFIG.minBet || bet > SLOT_CONFIG.maxBet) {
     throw new RangeError(`bet must be an integer between ${SLOT_CONFIG.minBet} and ${SLOT_CONFIG.maxBet}.`);
   }
 
-  const stops = generateStops();
+  const stops = forcedStops ?? generateStops();
   const board = createBoardFromStops(stops);
   const evaluation = evaluateBoard(board, bet, isFreeGame);
-  const freeGameResults: SpinRoundResult[] = isFreeGame
-    ? []
-    : Array.from(
-      { length: evaluation.freeGamesAwarded },
-      () => resolveSpin(bet, true),
-    );
+  const totalBet = isFreeGame ? 0 : evaluation.totalBet * wagerMultiplier;
+  const freeGameResults: SpinRoundResult[] = [];
+  if (!isFreeGame) {
+    const MAX_FREE_GAMES = 500;
+    let remaining = evaluation.freeGamesAwarded;
+    while (remaining > 0 && freeGameResults.length < MAX_FREE_GAMES) {
+      remaining -= 1;
+      const fgRound = resolveSpin(bet, true);
+      freeGameResults.push(fgRound);
+      if (fgRound.freeGamesAwarded > 0) {
+        remaining += fgRound.freeGamesAwarded;
+      }
+    }
+  }
   const baseGamePayout = evaluation.payout;
   const payout = baseGamePayout + freeGameResults.reduce((total, freeGame) => total + freeGame.payout, 0);
 
@@ -181,12 +257,13 @@ function resolveSpin(bet: number, isFreeGame: boolean): SpinResult {
     bet,
     lineBet: bet,
     ...evaluation,
+    totalBet,
     stops,
     board,
     baseGamePayout,
     freeGameResults,
     payout,
-    net: payout - evaluation.totalBet,
+    net: payout - totalBet,
     isFreeGame,
   };
 }
@@ -199,4 +276,14 @@ export function spinSync(bet: number): SpinResult {
 /** Runs only when explicitly invoked by the API request handler. */
 export async function runSpin(bet: number): Promise<SpinResult> {
   return spinSync(bet);
+}
+
+/** Executes a Buy Bonus spin landing 3 Scatters on reels 1, 3, and 5. */
+export async function runBonusBuy(bet: number): Promise<SpinResult> {
+  return resolveSpin(bet, false, generateBonusBuyStops(), SLOT_CONFIG.bonusBuyMultiplier);
+}
+
+/** Executes a developer cheat spin with forced reel stops for the selected preset. */
+export async function runCheatSpin(bet: number, cheat: CheatMode): Promise<SpinResult> {
+  return resolveSpin(bet, false, generateCheatStops(cheat));
 }

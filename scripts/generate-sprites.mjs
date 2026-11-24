@@ -160,7 +160,7 @@ const SYMBOLS = [
     code: 'h1',
     name: 'H1 // Космическая Ракета (Hyper Rocket)',
     tier: 'HIGH',
-    payout: [184, 612, 2447],
+    payout: [150, 600, 2500],
     svgContent: `
       ${createTechCardFrame({
         borderGrad: 'gold-cyber',
@@ -200,7 +200,7 @@ const SYMBOLS = [
     code: 'h2',
     name: 'H2 // Плазменный Бластер (Plasma Blaster)',
     tier: 'HIGH',
-    payout: [184, 612, 2447],
+    payout: [150, 600, 2500],
     svgContent: `
       ${createTechCardFrame({
         borderGrad: 'magenta-cyber',
@@ -244,7 +244,7 @@ const SYMBOLS = [
     code: 'm1',
     name: 'M1 // Джетпак (Cyber Jetpack)',
     tier: 'MEDIUM',
-    payout: [80, 275, 1040],
+    payout: [75, 300, 1000],
     svgContent: `
       ${createTechCardFrame({
         borderGrad: 'emerald-cyber',
@@ -293,7 +293,7 @@ const SYMBOLS = [
     code: 'm2',
     name: 'M2 // Энерго-Батарея (Energy Battery)',
     tier: 'MEDIUM',
-    payout: [80, 275, 1040],
+    payout: [75, 300, 1000],
     svgContent: `
       ${createTechCardFrame({
         borderGrad: 'cyan-cyber',
@@ -325,7 +325,7 @@ const SYMBOLS = [
     code: 'm3',
     name: 'M3 // Квантовый Микрочип (AI Microchip)',
     tier: 'MEDIUM',
-    payout: [80, 275, 1040],
+    payout: [75, 300, 1000],
     svgContent: `
       ${createTechCardFrame({
         borderGrad: 'crimson-cyber',
@@ -376,7 +376,7 @@ const SYMBOLS = [
     code: 'l1',
     name: 'L1 // Cyber Glyph A (Ace)',
     tier: 'LOW',
-    payout: [31, 110, 427],
+    payout: [30, 120, 500],
     svgContent: createLowGlyphSVG({
       glyph: 'A',
       gradId: 'crimson-cyber',
@@ -390,7 +390,7 @@ const SYMBOLS = [
     code: 'l2',
     name: 'L2 // Cyber Glyph K (King)',
     tier: 'LOW',
-    payout: [31, 110, 427],
+    payout: [30, 120, 500],
     svgContent: createLowGlyphSVG({
       glyph: 'K',
       gradId: 'gold-cyber',
@@ -404,7 +404,7 @@ const SYMBOLS = [
     code: 'l3',
     name: 'L3 // Cyber Glyph Q (Queen)',
     tier: 'LOW',
-    payout: [31, 110, 427],
+    payout: [30, 120, 500],
     svgContent: createLowGlyphSVG({
       glyph: 'Q',
       gradId: 'magenta-cyber',
@@ -418,7 +418,7 @@ const SYMBOLS = [
     code: 'l4',
     name: 'L4 // Cyber Glyph J (Jack)',
     tier: 'LOW',
-    payout: [31, 110, 427],
+    payout: [30, 120, 500],
     svgContent: createLowGlyphSVG({
       glyph: 'J',
       gradId: 'cyan-cyber',
@@ -432,7 +432,7 @@ const SYMBOLS = [
     code: 'l5',
     name: 'L5 // Cyber Glyph 10 (Ten)',
     tier: 'LOW',
-    payout: [31, 110, 427],
+    payout: [30, 120, 500],
     svgContent: createLowGlyphSVG({
       glyph: '10',
       gradId: 'emerald-cyber',
@@ -448,7 +448,7 @@ const SYMBOLS = [
     codeAlt: '9',
     name: 'L6 // Cyber Glyph 9 (Nine)',
     tier: 'LOW',
-    payout: [31, 110, 427],
+    payout: [30, 120, 500],
     svgContent: createLowGlyphSVG({
       glyph: '9',
       gradId: 'chrome-bevel',
@@ -885,6 +885,31 @@ const EXTRA_SPRITES = [
       <!-- Corner Cyber Brackets -->
       <rect x="24" y="88" width="90" height="4" rx="2" fill="#ff2cdf" opacity="0.8"/>
       <rect x="1086" y="88" width="90" height="4" rx="2" fill="#00ff88" opacity="0.8"/>
+    `
+  },
+  // 14. Square Buy Bonus Button (160x160)
+  {
+    dir: UI_DIR,
+    filename: 'btn_buy_bonus.svg',
+    width: 160,
+    height: 160,
+    content: `
+      <!-- Outer Magenta/Gold Neon Glow -->
+      <polygon points="24,8 136,8 152,24 152,136 136,152 24,152 8,136 8,24" fill="none" stroke="#ff2cdf" stroke-width="5" opacity="0.65" filter="url(#glow-Strong)"/>
+      <!-- Armored Square Chassis -->
+      <polygon points="24,8 136,8 152,24 152,136 136,152 24,152 8,136 8,24" fill="url(#dark-metal)" stroke="url(#gold-cyber)" stroke-width="6" filter="url(#drop-shadow)"/>
+      <!-- Glowing Magenta Core -->
+      <polygon points="30,18 130,18 142,30 142,130 130,142 30,142 18,130 18,30" fill="url(#magenta-cyber)" stroke="#00f0ff" stroke-width="2.5"/>
+      <!-- Top Gloss -->
+      <polygon points="30,18 130,18 142,30 142,74 18,74 18,30" fill="url(#glass-sheen)"/>
+      <!-- Top & Bottom LED Strips -->
+      <rect x="48" y="6" width="64" height="5" rx="2.5" fill="#ffd000" filter="url(#glow-cyan)"/>
+      <rect x="48" y="149" width="64" height="5" rx="2.5" fill="#00f0ff" filter="url(#glow-cyan)"/>
+      <!-- BUY BONUS Stacked Title -->
+      <text x="80" y="54" text-anchor="middle" font-family="'Orbitron', 'Arial Black', sans-serif" font-weight="900" font-size="24" fill="#ffffff" stroke="#3c0078" stroke-width="2" letter-spacing="2">BUY</text>
+      <text x="80" y="82" text-anchor="middle" font-family="'Orbitron', 'Arial Black', sans-serif" font-weight="900" font-size="23" fill="#fff6a9" stroke="#3c0078" stroke-width="2" letter-spacing="1.5">BONUS</text>
+      <!-- Recessed Dark Price Slot -->
+      <rect x="28" y="96" width="104" height="34" rx="8" fill="#090318" stroke="#ffd000" stroke-width="2"/>
     `
   }
 ];

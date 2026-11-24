@@ -24,6 +24,9 @@ export const FRAME_BOUNDS = {
 /** Layout coordinates for Top & Bottom HUD on the 1600x900 stage. */
 export const HUD_LAYOUT = {
   topY: 54,
+  buyBonusX: 115,
+  buyBonusY: STAGE_HEIGHT / 2 + FRAME_BOUNDS.stageOffsetY,
+  buyBonusSize: 156,
   balancePanelX: 1180,
   balancePanelWidth: 340,
   balancePanelHeight: 72,

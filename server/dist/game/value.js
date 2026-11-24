@@ -49,17 +49,17 @@ export const PAYTABLE_COMBINATION_COUNTS = [3, 4, 5];
 /** Rows are symbol IDs; columns are 3-, 4- and 5-symbol combinations. */
 export const PAYTABLE = [
     [0, 0, 0], // Wild is a substitute; it has no direct line award.
-    [184, 612, 2447], // H1
-    [184, 612, 2447], // H2
-    [80, 275, 1040], // M1
-    [80, 275, 1040], // M2
-    [80, 275, 1040], // M3
-    [31, 110, 427], // L1
-    [31, 110, 427], // L2
-    [31, 110, 427], // L3
-    [31, 110, 427], // L4
-    [31, 110, 427], // L5
-    [31, 110, 427], // L6
+    [150, 600, 2500], // H1
+    [150, 600, 2500], // H2
+    [75, 300, 1000], // M1
+    [75, 300, 1000], // M2
+    [75, 300, 1000], // M3
+    [30, 120, 500], // L1
+    [30, 120, 500], // L2
+    [30, 120, 500], // L3
+    [30, 120, 500], // L4
+    [30, 120, 500], // L5
+    [30, 120, 500], // L6
     [0, 0, 0], // Scatter has no payline award.
 ];
 export const WAGER_CONFIG = {
@@ -73,6 +73,7 @@ export const FREE_GAMES_AWARDS = {
     4: 10,
     5: 15,
 };
+export const BONUS_BUY_MULTIPLIER = 5;
 const REEL_1 = [
     SymbolId.L1, SymbolId.L2, SymbolId.L3, SymbolId.L4, SymbolId.L5, SymbolId.Scatter, SymbolId.L6, SymbolId.M1, SymbolId.M2, SymbolId.M3,
     SymbolId.H1, SymbolId.H2, SymbolId.L1, SymbolId.L2, SymbolId.L3, SymbolId.L4, SymbolId.L5, SymbolId.L6, SymbolId.Wild, SymbolId.M1,
@@ -146,6 +147,7 @@ export const SLOT_CONFIG = {
     payoutMultipliers: PAYTABLE,
     payoutCombinationCounts: PAYTABLE_COMBINATION_COUNTS,
     freeGamesAwards: FREE_GAMES_AWARDS,
+    bonusBuyMultiplier: BONUS_BUY_MULTIPLIER,
     wager: WAGER_CONFIG,
     lineBet: true,
 };

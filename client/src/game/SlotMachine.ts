@@ -1,12 +1,15 @@
 import { Container, Graphics, Sprite } from 'pixi.js';
 import type { GameAssets } from '../assets';
 import { FRAME_BOUNDS } from '../config';
-import type { SlotConfigResponse } from '../types/api';
+import type { LineWin, SlotConfigResponse } from '../types/api';
 import { Reel } from './Reel';
+import { WinOverlay } from './WinOverlay';
 
 export class SlotMachine extends Container {
   private readonly reelsLayer = new Container();
   private readonly reels: Reel[] = [];
+  private readonly winOverlay: WinOverlay;
+  private readonly config: SlotConfigResponse;
 
   private readonly columns: number;
   private readonly rows: number;
@@ -17,6 +20,7 @@ export class SlotMachine extends Container {
   constructor(assets: GameAssets, config: SlotConfigResponse) {
     super();
 
+    this.config = config;
     this.columns = config.columns;
     this.rows = config.rows;
     this.colWidth =
@@ -65,6 +69,15 @@ export class SlotMachine extends Container {
       this.addChild(divider);
     }
 
+    this.winOverlay = new WinOverlay(
+      assets,
+      config.paylines,
+      this.colWidth,
+      this.colStep,
+      this.rowHeight,
+    );
+    this.addChild(this.winOverlay);
+
     const leftBadge = new Sprite(assets.machine.paylinesBadge);
     leftBadge.anchor.set(0.5);
     leftBadge.position.set(FRAME_BOUNDS.badgeOffsetX, FRAME_BOUNDS.height / 2);
@@ -85,5 +98,80 @@ export class SlotMachine extends Container {
     for (let col = 0; col < this.reels.length; col += 1) {
       this.reels[col].setStop(stops[col]);
     }
+  }
+
+  public spinToStops(stops: readonly number[]): Promise<void> {
+    const animations = this.reels.map((reel, col) => {
+      const spinDurationSec = 0.6 + col * 0.22;
+      return reel.spinTo(stops[col], spinDurationSec);
+    });
+    return Promise.all(animations).then(() => undefined);
+  }
+
+  public slamStop(): void {
+    for (const reel of this.reels) {
+      reel.slamStop();
+    }
+  }
+
+  public showWins(
+    wins: readonly LineWin[],
+    board?: readonly (readonly number[])[],
+    highlightScatters = false,
+  ): void {
+    this.winOverlay.showWins(wins);
+
+    if (!board) return;
+
+    const wildId = this.config.symbolInfo.find((s) => s.code === 'WW')?.id ?? 0;
+    const h1Id = this.config.symbolInfo.find((s) => s.code === 'H1')?.id ?? 1;
+    const h2Id = this.config.symbolInfo.find((s) => s.code === 'H2')?.id ?? 2;
+    const scId = this.config.symbolInfo.find((s) => s.code === 'SC')?.id ?? 12;
+
+    // Animate Wild, H1 (Rocket) & H2 (Blaster) symbols that participated in winning paylines
+    for (const win of wins) {
+      const payline = this.config.paylines.find((p) => p.id === win.payline);
+      if (!payline) continue;
+      for (let col = 0; col < win.count; col += 1) {
+        const row = payline.rows[col];
+        const symId = board[row][col];
+        if (symId === wildId) {
+          this.reels[col].animateRow(row, 'wild');
+        } else if (symId === h1Id) {
+          this.reels[col].animateRow(row, 'h1');
+        } else if (symId === h2Id) {
+          this.reels[col].animateRow(row, 'h2');
+        }
+      }
+    }
+
+    // Animate Scatter (Portal) symbols when 3+ Scatters triggered Free Games / Retrigger
+    if (highlightScatters) {
+      for (let row = 0; row < this.rows; row += 1) {
+        for (let col = 0; col < this.columns; col += 1) {
+          if (board[row][col] === scId) {
+            this.reels[col].animateRow(row, 'scatter');
+          }
+        }
+      }
+    }
+  }
+
+  public clearWins(): void {
+    this.winOverlay.clearWins();
+    for (const reel of this.reels) {
+      reel.clearRowAnimations();
+    }
+  }
+
+  public getWinShowcaseMs(): number {
+    return this.winOverlay.getFullShowcaseMs();
+  }
+
+  public update(deltaSeconds: number): void {
+    for (const reel of this.reels) {
+      reel.update(deltaSeconds);
+    }
+    this.winOverlay.update(deltaSeconds);
   }
 }

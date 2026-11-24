@@ -27,6 +27,7 @@ const MACHINE_URLS = {
 
 const UI_URLS = {
   btnSpin: '/sprites/ui/btn_spin.svg',
+  btnBuyBonus: '/sprites/ui/btn_buy_bonus.svg',
   btnMinus: '/sprites/ui/btn_minus.svg',
   btnPlus: '/sprites/ui/btn_plus.svg',
   btnMaxBet: '/sprites/ui/btn_max_bet.svg',

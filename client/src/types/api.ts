@@ -34,6 +34,7 @@ export interface SlotConfigResponse {
   payoutCombinationCounts: [3, 4, 5];
   wager: WagerConfig;
   freeGamesAwards: Record<number, number>;
+  bonusBuyMultiplier: number;
 }
 
 export interface LineWin {
@@ -64,3 +65,11 @@ export interface SpinResponse extends SpinRoundResult {
   baseGamePayout: number;
   freeGameResults: SpinRoundResult[];
 }
+
+export type CheatMode =
+  | 'h1_win'
+  | 'h2_win'
+  | 'wild_win'
+  | 'scatter_3'
+  | 'scatter_4'
+  | 'scatter_5';

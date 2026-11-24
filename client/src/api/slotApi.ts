@@ -1,4 +1,4 @@
-import type { SlotConfigResponse, SpinResponse } from '../types/api';
+import type { CheatMode, SlotConfigResponse, SpinResponse } from '../types/api';
 
 const API_BASE = '/api';
 
@@ -20,6 +20,36 @@ export async function requestSpin(bet: number): Promise<SpinResponse> {
   if (!res.ok) {
     const body = await res.json().catch(() => null);
     throw new Error(body?.error?.message ?? `Spin request failed: ${res.status}`);
+  }
+
+  return res.json();
+}
+
+export async function requestBuyBonus(bet: number): Promise<SpinResponse> {
+  const res = await fetch(`${API_BASE}/buy-bonus`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ bet }),
+  });
+
+  if (!res.ok) {
+    const body = await res.json().catch(() => null);
+    throw new Error(body?.error?.message ?? `Buy bonus request failed: ${res.status}`);
+  }
+
+  return res.json();
+}
+
+export async function requestCheatSpin(bet: number, cheat: CheatMode): Promise<SpinResponse> {
+  const res = await fetch(`${API_BASE}/cheat-spin`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ bet, cheat }),
+  });
+
+  if (!res.ok) {
+    const body = await res.json().catch(() => null);
+    throw new Error(body?.error?.message ?? `Cheat spin request failed: ${res.status}`);
   }
 
   return res.json();

@@ -25,9 +25,9 @@
       "name": "H1 // Космическая Ракета (Hyper Rocket)",
       "tier": "HIGH",
       "payoutMultipliers": [
-        184,
-        612,
-        2447
+        150,
+        600,
+        2500
       ],
       "svg": "symbols/symbol_01_h1.svg",
       "png": "symbols/png/symbol_01_h1.png"
@@ -38,9 +38,9 @@
       "name": "H2 // Плазменный Бластер (Plasma Blaster)",
       "tier": "HIGH",
       "payoutMultipliers": [
-        184,
-        612,
-        2447
+        150,
+        600,
+        2500
       ],
       "svg": "symbols/symbol_02_h2.svg",
       "png": "symbols/png/symbol_02_h2.png"
@@ -51,9 +51,9 @@
       "name": "M1 // Джетпак (Cyber Jetpack)",
       "tier": "MEDIUM",
       "payoutMultipliers": [
-        80,
-        275,
-        1040
+        75,
+        300,
+        1000
       ],
       "svg": "symbols/symbol_03_m1.svg",
       "png": "symbols/png/symbol_03_m1.png"
@@ -64,9 +64,9 @@
       "name": "M2 // Энерго-Батарея (Energy Battery)",
       "tier": "MEDIUM",
       "payoutMultipliers": [
-        80,
-        275,
-        1040
+        75,
+        300,
+        1000
       ],
       "svg": "symbols/symbol_04_m2.svg",
       "png": "symbols/png/symbol_04_m2.png"
@@ -77,9 +77,9 @@
       "name": "M3 // Квантовый Микрочип (AI Microchip)",
       "tier": "MEDIUM",
       "payoutMultipliers": [
-        80,
-        275,
-        1040
+        75,
+        300,
+        1000
       ],
       "svg": "symbols/symbol_05_m3.svg",
       "png": "symbols/png/symbol_05_m3.png"
@@ -90,9 +90,9 @@
       "name": "L1 // Cyber Glyph A (Ace)",
       "tier": "LOW",
       "payoutMultipliers": [
-        31,
-        110,
-        427
+        30,
+        120,
+        500
       ],
       "svg": "symbols/symbol_06_l1.svg",
       "png": "symbols/png/symbol_06_l1.png"
@@ -103,9 +103,9 @@
       "name": "L2 // Cyber Glyph K (King)",
       "tier": "LOW",
       "payoutMultipliers": [
-        31,
-        110,
-        427
+        30,
+        120,
+        500
       ],
       "svg": "symbols/symbol_07_l2.svg",
       "png": "symbols/png/symbol_07_l2.png"
@@ -116,9 +116,9 @@
       "name": "L3 // Cyber Glyph Q (Queen)",
       "tier": "LOW",
       "payoutMultipliers": [
-        31,
-        110,
-        427
+        30,
+        120,
+        500
       ],
       "svg": "symbols/symbol_08_l3.svg",
       "png": "symbols/png/symbol_08_l3.png"
@@ -129,9 +129,9 @@
       "name": "L4 // Cyber Glyph J (Jack)",
       "tier": "LOW",
       "payoutMultipliers": [
-        31,
-        110,
-        427
+        30,
+        120,
+        500
       ],
       "svg": "symbols/symbol_09_l4.svg",
       "png": "symbols/png/symbol_09_l4.png"
@@ -142,9 +142,9 @@
       "name": "L5 // Cyber Glyph 10 (Ten)",
       "tier": "LOW",
       "payoutMultipliers": [
-        31,
-        110,
-        427
+        30,
+        120,
+        500
       ],
       "svg": "symbols/symbol_10_l5.svg",
       "png": "symbols/png/symbol_10_l5.png"
@@ -155,9 +155,9 @@
       "name": "L6 // Cyber Glyph 9 (Nine)",
       "tier": "LOW",
       "payoutMultipliers": [
-        31,
-        110,
-        427
+        30,
+        120,
+        500
       ],
       "svg": "symbols/symbol_11_l6.svg",
       "png": "symbols/png/symbol_11_l6.png"
@@ -283,6 +283,13 @@
       "height": 104,
       "svg": "ui/panel_bottom_dock.svg",
       "png": "ui/png/panel_bottom_dock.png"
+    },
+    {
+      "name": "btn_buy_bonus",
+      "width": 160,
+      "height": 160,
+      "svg": "ui/btn_buy_bonus.svg",
+      "png": "ui/png/btn_buy_bonus.png"
     }
   ]
 }

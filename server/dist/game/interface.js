@@ -77,4 +77,13 @@ export var ErrorCode;
     ErrorCode["BodyTooLarge"] = "BODY_TOO_LARGE";
     ErrorCode["InternalError"] = "INTERNAL_ERROR";
 })(ErrorCode || (ErrorCode = {}));
+export var CheatMode;
+(function (CheatMode) {
+    CheatMode["H1Win"] = "h1_win";
+    CheatMode["H2Win"] = "h2_win";
+    CheatMode["WildWin"] = "wild_win";
+    CheatMode["Scatter3"] = "scatter_3";
+    CheatMode["Scatter4"] = "scatter_4";
+    CheatMode["Scatter5"] = "scatter_5";
+})(CheatMode || (CheatMode = {}));
 //# sourceMappingURL=interface.js.map

@@ -41,9 +41,9 @@ test('GET /api/config publishes the approved dimensions, reels and rules', async
     assert.ok(config.reelStrips.every((reel) => reel.length === 100 && reel.every(Number.isInteger)));
     assert.deepEqual(config.freeGamesAwards, { 3: 5, 4: 10, 5: 15 });
     assert.deepEqual(config.payoutCombinationCounts, [3, 4, 5]);
-    assert.deepEqual(config.payoutMultipliers[1], [184, 612, 2447]);
-    assert.deepEqual(config.payoutMultipliers[3], [80, 275, 1040]);
-    assert.deepEqual(config.payoutMultipliers[6], [31, 110, 427]);
+    assert.deepEqual(config.payoutMultipliers[1], [150, 600, 2500]);
+    assert.deepEqual(config.payoutMultipliers[3], [75, 300, 1000]);
+    assert.deepEqual(config.payoutMultipliers[6], [30, 120, 500]);
     assert.deepEqual(config.wager, {
       minLineBet: 1,
       maxLineBet: 10_000,
