@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  
+  <defs>
+    <filter id="glow-cyan" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="8" result="blur1"/>
+      <feGaussianBlur stdDeviation="3" result="blur2"/>
+      <feMerge>
+        <feMergeNode in="blur1"/>
+        <feMergeNode in="blur2"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="glow-Strong" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="12" result="blur1"/>
+      <feGaussianBlur stdDeviation="4" result="blur2"/>
+      <feMerge>
+        <feMergeNode in="blur1"/>
+        <feMergeNode in="blur2"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="drop-shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#000511" flood-opacity="0.85"/>
+    </filter>
+    <linearGradient id="dark-metal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1b2845"/>
+      <stop offset="50%" stop-color="#0d1527"/>
+      <stop offset="100%" stop-color="#060a14"/>
+    </linearGradient>
+    <linearGradient id="chrome-bevel" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e0f7ff"/>
+      <stop offset="25%" stop-color="#7fa6c9"/>
+      <stop offset="50%" stop-color="#2c4263"/>
+      <stop offset="85%" stop-color="#8cb8de"/>
+      <stop offset="100%" stop-color="#16243b"/>
+    </linearGradient>
+    <linearGradient id="gold-cyber" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff6a9"/>
+      <stop offset="30%" stop-color="#ffd000"/>
+      <stop offset="70%" stop-color="#ff7b00"/>
+      <stop offset="100%" stop-color="#9e3600"/>
+    </linearGradient>
+    <linearGradient id="magenta-cyber" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffb8ff"/>
+      <stop offset="35%" stop-color="#ff2cdf"/>
+      <stop offset="75%" stop-color="#a800ff"/>
+      <stop offset="100%" stop-color="#3c0078"/>
+    </linearGradient>
+    <linearGradient id="cyan-cyber" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e0ffff"/>
+      <stop offset="35%" stop-color="#00f0ff"/>
+      <stop offset="75%" stop-color="#0077ff"/>
+      <stop offset="100%" stop-color="#002663"/>
+    </linearGradient>
+    <linearGradient id="emerald-cyber" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d4ffea"/>
+      <stop offset="30%" stop-color="#00ff88"/>
+      <stop offset="75%" stop-color="#009e52"/>
+      <stop offset="100%" stop-color="#00381d"/>
+    </linearGradient>
+    <linearGradient id="crimson-cyber" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffd6d6"/>
+      <stop offset="30%" stop-color="#ff2a54"/>
+      <stop offset="75%" stop-color="#b80028"/>
+      <stop offset="100%" stop-color="#42000e"/>
+    </linearGradient>
+    <linearGradient id="glass-sheen" x1="0%" y1="0%" x2="70%" y2="70%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.35"/>
+      <stop offset="45%" stop-color="#ffffff" stop-opacity="0.06"/>
+      <stop offset="50%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <pattern id="hex-grid" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M12 0 L24 7 L24 17 L12 24 L0 17 L0 7 Z" fill="none" stroke="#00f0ff" stroke-width="0.7" stroke-opacity="0.16"/>
+    </pattern>
+  </defs>
+
+  
+    
+    <!-- Outer Glow -->
+    <rect x="18" y="18" width="220" height="220" rx="34" fill="none" stroke="#00f0ff" stroke-width="5" opacity="0.55" filter="url(#glow-cyan)"/>
+    <!-- Base Metallic Chassis -->
+    <rect x="16" y="16" width="224" height="224" rx="34" fill="url(#dark-metal)" stroke="url(#chrome-bevel)" stroke-width="7" filter="url(#drop-shadow)"/>
+    <!-- Inner Cyber Background -->
+    <rect x="28" y="28" width="200" height="200" rx="24" fill="#091224"/>
+    <rect x="28" y="28" width="200" height="200" rx="24" fill="url(#hex-grid)"/>
+    <!-- Circuit Traces -->
+    <g stroke="#00f0ff" stroke-width="1.5" opacity="0.3" fill="none">
+      <path d="M40 50 L65 50 L78 63 L110 63"/>
+      <circle cx="113" cy="63" r="2.5" fill="#00f0ff"/>
+      <path d="M216 195 L185 195 L172 182 L145 182"/>
+      <circle cx="142" cy="182" r="2.5" fill="#00f0ff"/>
+      <path d="M50 210 L50 180 L65 165"/>
+      <path d="M204 45 L204 75 L189 90"/>
+    </g>
+    <!-- Tech Corner Brackets -->
+    <g fill="#00f0ff" opacity="0.9">
+      <path d="M24 48 L24 32 Q24 24 32 24 L48 24 L48 30 L32 30 Q30 30 30 32 L30 48 Z"/>
+      <path d="M208 24 L224 24 Q232 24 232 32 L232 48 L226 48 L226 32 Q226 30 224 30 L208 30 Z"/>
+      <path d="M24 208 L24 224 Q24 232 32 232 L48 232 L48 226 L32 226 Q30 226 30 224 L30 208 Z"/>
+      <path d="M208 232 L224 232 Q232 232 232 224 L232 208 L226 208 L226 224 Q226 226 224 226 L208 226 Z"/>
+    </g>
+    <!-- Top/Bottom LED notches -->
+    <rect x="104" y="15" width="48" height="6" rx="3" fill="#00f0ff" filter="url(#glow-cyan)"/>
+    <rect x="104" y="235" width="48" height="6" rx="3" fill="#00f0ff" filter="url(#glow-cyan)"/>
+  
+    <!-- Holographic Pedestal -->
+    <ellipse cx="128" cy="186" rx="58" ry="12" fill="#00f0ff" opacity="0.28" filter="url(#glow-cyan)"/>
+    <ellipse cx="128" cy="186" rx="42" ry="6" fill="none" stroke="#00f0ff" stroke-width="2" opacity="0.75"/>
+    <!-- 3D Metallic Cyber Glyph -->
+    <g filter="url(#drop-shadow)">
+      <!-- Extrusion shadow layer -->
+      <text x="128" y="166" text-anchor="middle" font-family="'Orbitron', 'Arial Black', sans-serif" font-weight="900" font-size="132" fill="#040812" stroke="#040812" stroke-width="12">J</text>
+      <!-- Main gradient glyph -->
+      <text x="128" y="160" text-anchor="middle" font-family="'Orbitron', 'Arial Black', sans-serif" font-weight="900" font-size="132" fill="url(#cyan-cyber)" stroke="#e0ffff" stroke-width="4" filter="url(#glow-cyan)">J</text>
+    </g>
+    <!-- Micro Tech Tag -->
+    <text x="128" y="212" text-anchor="middle" font-family="'Orbitron', monospace" font-weight="700" font-size="13" fill="#00f0ff" letter-spacing="3" opacity="0.85">JCK // 04</text>
+    <rect x="28" y="28" width="200" height="90" rx="24" fill="url(#glass-sheen)"/>
+  
+</svg>

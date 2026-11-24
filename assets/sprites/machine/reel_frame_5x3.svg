@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 680" width="1100" height="680">
+  
+  <defs>
+    <filter id="glow-cyan" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="8" result="blur1"/>
+      <feGaussianBlur stdDeviation="3" result="blur2"/>
+      <feMerge>
+        <feMergeNode in="blur1"/>
+        <feMergeNode in="blur2"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="glow-Strong" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="12" result="blur1"/>
+      <feGaussianBlur stdDeviation="4" result="blur2"/>
+      <feMerge>
+        <feMergeNode in="blur1"/>
+        <feMergeNode in="blur2"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="drop-shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#000511" flood-opacity="0.85"/>
+    </filter>
+    <linearGradient id="dark-metal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1b2845"/>
+      <stop offset="50%" stop-color="#0d1527"/>
+      <stop offset="100%" stop-color="#060a14"/>
+    </linearGradient>
+    <linearGradient id="chrome-bevel" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e0f7ff"/>
+      <stop offset="25%" stop-color="#7fa6c9"/>
+      <stop offset="50%" stop-color="#2c4263"/>
+      <stop offset="85%" stop-color="#8cb8de"/>
+      <stop offset="100%" stop-color="#16243b"/>
+    </linearGradient>
+    <linearGradient id="gold-cyber" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff6a9"/>
+      <stop offset="30%" stop-color="#ffd000"/>
+      <stop offset="70%" stop-color="#ff7b00"/>
+      <stop offset="100%" stop-color="#9e3600"/>
+    </linearGradient>
+    <linearGradient id="magenta-cyber" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffb8ff"/>
+      <stop offset="35%" stop-color="#ff2cdf"/>
+      <stop offset="75%" stop-color="#a800ff"/>
+      <stop offset="100%" stop-color="#3c0078"/>
+    </linearGradient>
+    <linearGradient id="cyan-cyber" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e0ffff"/>
+      <stop offset="35%" stop-color="#00f0ff"/>
+      <stop offset="75%" stop-color="#0077ff"/>
+      <stop offset="100%" stop-color="#002663"/>
+    </linearGradient>
+    <linearGradient id="emerald-cyber" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d4ffea"/>
+      <stop offset="30%" stop-color="#00ff88"/>
+      <stop offset="75%" stop-color="#009e52"/>
+      <stop offset="100%" stop-color="#00381d"/>
+    </linearGradient>
+    <linearGradient id="crimson-cyber" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffd6d6"/>
+      <stop offset="30%" stop-color="#ff2a54"/>
+      <stop offset="75%" stop-color="#b80028"/>
+      <stop offset="100%" stop-color="#42000e"/>
+    </linearGradient>
+    <linearGradient id="glass-sheen" x1="0%" y1="0%" x2="70%" y2="70%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.35"/>
+      <stop offset="45%" stop-color="#ffffff" stop-opacity="0.06"/>
+      <stop offset="50%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <pattern id="hex-grid" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M12 0 L24 7 L24 17 L12 24 L0 17 L0 7 Z" fill="none" stroke="#00f0ff" stroke-width="0.7" stroke-opacity="0.16"/>
+    </pattern>
+  </defs>
+
+  
+      <!-- Outer Cyber Frame Glow -->
+      <rect x="24" y="24" width="1052" height="632" rx="28" fill="none" stroke="#00f0ff" stroke-width="6" opacity="0.5" filter="url(#glow-Strong)"/>
+      <!-- Dark Deep Space Reel Backplate -->
+      <rect x="30" y="30" width="1040" height="620" rx="22" fill="#050b18" stroke="url(#chrome-bevel)" stroke-width="16" filter="url(#drop-shadow)"/>
+      <!-- Semi-transparent Reel Column Lanes (5 columns) -->
+      <g opacity="0.9">
+        <rect x="44" y="44" width="196" height="592" fill="#08142b"/>
+        <rect x="248" y="44" width="196" height="592" fill="#0a1833"/>
+        <rect x="452" y="44" width="196" height="592" fill="#08142b"/>
+        <rect x="656" y="44" width="196" height="592" fill="#0a1833"/>
+        <rect x="860" y="44" width="196" height="592" fill="#08142b"/>
+      </g>
+      <rect x="44" y="44" width="1012" height="592" fill="url(#hex-grid)"/>
+      <!-- Corner Heavy Armor Plates -->
+      <g fill="url(#gold-cyber)" stroke="#ffffff" stroke-width="1.5">
+        <polygon points="18,64 18,18 64,18 52,36 36,36 36,52"/>
+        <polygon points="1082,64 1082,18 1036,18 1048,36 1064,36 1064,52"/>
+        <polygon points="18,616 18,662 64,662 52,644 36,644 36,628"/>
+        <polygon points="1082,616 1082,662 1036,662 1048,644 1064,644 1064,628"/>
+      </g>
+      <!-- Top & Bottom Neon Energy Conduits -->
+      <rect x="280" y="20" width="540" height="8" rx="4" fill="#00f0ff" filter="url(#glow-cyan)"/>
+      <rect x="280" y="652" width="540" height="8" rx="4" fill="#00f0ff" filter="url(#glow-cyan)"/>
+    
+</svg>

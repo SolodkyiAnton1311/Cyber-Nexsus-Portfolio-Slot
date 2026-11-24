@@ -1,0 +1,288 @@
+{
+  "theme": "Cyber Nexus // High-Tech Slot Machine",
+  "grid": {
+    "rows": 3,
+    "columns": 5,
+    "activePaylines": 10
+  },
+  "symbols": [
+    {
+      "id": 0,
+      "code": "WILD",
+      "name": "WW // Quantum AI Core (Wild)",
+      "tier": "SPECIAL",
+      "payoutMultipliers": [
+        0,
+        0,
+        0
+      ],
+      "svg": "symbols/symbol_00_wild.svg",
+      "png": "symbols/png/symbol_00_wild.png"
+    },
+    {
+      "id": 1,
+      "code": "H1",
+      "name": "H1 // Космическая Ракета (Hyper Rocket)",
+      "tier": "HIGH",
+      "payoutMultipliers": [
+        184,
+        612,
+        2447
+      ],
+      "svg": "symbols/symbol_01_h1.svg",
+      "png": "symbols/png/symbol_01_h1.png"
+    },
+    {
+      "id": 2,
+      "code": "H2",
+      "name": "H2 // Плазменный Бластер (Plasma Blaster)",
+      "tier": "HIGH",
+      "payoutMultipliers": [
+        184,
+        612,
+        2447
+      ],
+      "svg": "symbols/symbol_02_h2.svg",
+      "png": "symbols/png/symbol_02_h2.png"
+    },
+    {
+      "id": 3,
+      "code": "M1",
+      "name": "M1 // Джетпак (Cyber Jetpack)",
+      "tier": "MEDIUM",
+      "payoutMultipliers": [
+        80,
+        275,
+        1040
+      ],
+      "svg": "symbols/symbol_03_m1.svg",
+      "png": "symbols/png/symbol_03_m1.png"
+    },
+    {
+      "id": 4,
+      "code": "M2",
+      "name": "M2 // Энерго-Батарея (Energy Battery)",
+      "tier": "MEDIUM",
+      "payoutMultipliers": [
+        80,
+        275,
+        1040
+      ],
+      "svg": "symbols/symbol_04_m2.svg",
+      "png": "symbols/png/symbol_04_m2.png"
+    },
+    {
+      "id": 5,
+      "code": "M3",
+      "name": "M3 // Квантовый Микрочип (AI Microchip)",
+      "tier": "MEDIUM",
+      "payoutMultipliers": [
+        80,
+        275,
+        1040
+      ],
+      "svg": "symbols/symbol_05_m3.svg",
+      "png": "symbols/png/symbol_05_m3.png"
+    },
+    {
+      "id": 6,
+      "code": "L1",
+      "name": "L1 // Cyber Glyph A (Ace)",
+      "tier": "LOW",
+      "payoutMultipliers": [
+        31,
+        110,
+        427
+      ],
+      "svg": "symbols/symbol_06_l1.svg",
+      "png": "symbols/png/symbol_06_l1.png"
+    },
+    {
+      "id": 7,
+      "code": "L2",
+      "name": "L2 // Cyber Glyph K (King)",
+      "tier": "LOW",
+      "payoutMultipliers": [
+        31,
+        110,
+        427
+      ],
+      "svg": "symbols/symbol_07_l2.svg",
+      "png": "symbols/png/symbol_07_l2.png"
+    },
+    {
+      "id": 8,
+      "code": "L3",
+      "name": "L3 // Cyber Glyph Q (Queen)",
+      "tier": "LOW",
+      "payoutMultipliers": [
+        31,
+        110,
+        427
+      ],
+      "svg": "symbols/symbol_08_l3.svg",
+      "png": "symbols/png/symbol_08_l3.png"
+    },
+    {
+      "id": 9,
+      "code": "L4",
+      "name": "L4 // Cyber Glyph J (Jack)",
+      "tier": "LOW",
+      "payoutMultipliers": [
+        31,
+        110,
+        427
+      ],
+      "svg": "symbols/symbol_09_l4.svg",
+      "png": "symbols/png/symbol_09_l4.png"
+    },
+    {
+      "id": 10,
+      "code": "L5",
+      "name": "L5 // Cyber Glyph 10 (Ten)",
+      "tier": "LOW",
+      "payoutMultipliers": [
+        31,
+        110,
+        427
+      ],
+      "svg": "symbols/symbol_10_l5.svg",
+      "png": "symbols/png/symbol_10_l5.png"
+    },
+    {
+      "id": 11,
+      "code": "L6",
+      "name": "L6 // Cyber Glyph 9 (Nine)",
+      "tier": "LOW",
+      "payoutMultipliers": [
+        31,
+        110,
+        427
+      ],
+      "svg": "symbols/symbol_11_l6.svg",
+      "png": "symbols/png/symbol_11_l6.png"
+    },
+    {
+      "id": 12,
+      "code": "SCATTER",
+      "name": "SC // Hyperdrive Singularity Portal (Scatter)",
+      "tier": "SPECIAL",
+      "payoutMultipliers": [
+        0,
+        0,
+        0
+      ],
+      "svg": "symbols/symbol_12_scatter.svg",
+      "png": "symbols/png/symbol_12_scatter.png"
+    }
+  ],
+  "machineSprites": [
+    {
+      "name": "bg_cyber_stage",
+      "width": 1600,
+      "height": 900,
+      "svg": "machine/bg_cyber_stage.svg",
+      "png": "machine/png/bg_cyber_stage.png"
+    },
+    {
+      "name": "reel_frame_5x3",
+      "width": 1100,
+      "height": 680,
+      "svg": "machine/reel_frame_5x3.svg",
+      "png": "machine/png/reel_frame_5x3.png"
+    },
+    {
+      "name": "reel_divider_laser",
+      "width": 32,
+      "height": 600,
+      "svg": "machine/reel_divider_laser.svg",
+      "png": "machine/png/reel_divider_laser.png"
+    },
+    {
+      "name": "badge_10_paylines",
+      "width": 160,
+      "height": 160,
+      "svg": "machine/badge_10_paylines.svg",
+      "png": "machine/png/badge_10_paylines.png"
+    },
+    {
+      "name": "win_cell_frame",
+      "width": 256,
+      "height": 256,
+      "svg": "machine/win_cell_frame.svg",
+      "png": "machine/png/win_cell_frame.png"
+    }
+  ],
+  "uiSprites": [
+    {
+      "name": "btn_spin",
+      "width": 320,
+      "height": 112,
+      "svg": "ui/btn_spin.svg",
+      "png": "ui/png/btn_spin.png"
+    },
+    {
+      "name": "btn_minus",
+      "width": 80,
+      "height": 80,
+      "svg": "ui/btn_minus.svg",
+      "png": "ui/png/btn_minus.png"
+    },
+    {
+      "name": "btn_plus",
+      "width": 80,
+      "height": 80,
+      "svg": "ui/btn_plus.svg",
+      "png": "ui/png/btn_plus.png"
+    },
+    {
+      "name": "btn_max_bet",
+      "width": 110,
+      "height": 80,
+      "svg": "ui/btn_max_bet.svg",
+      "png": "ui/png/btn_max_bet.png"
+    },
+    {
+      "name": "btn_info",
+      "width": 72,
+      "height": 72,
+      "svg": "ui/btn_info.svg",
+      "png": "ui/png/btn_info.png"
+    },
+    {
+      "name": "panel_display_meter",
+      "width": 380,
+      "height": 84,
+      "svg": "ui/panel_display_meter.svg",
+      "png": "ui/png/panel_display_meter.png"
+    },
+    {
+      "name": "panel_win_display",
+      "width": 680,
+      "height": 84,
+      "svg": "ui/panel_win_display.svg",
+      "png": "ui/png/panel_win_display.png"
+    },
+    {
+      "name": "icon_cyber_coin",
+      "width": 64,
+      "height": 64,
+      "svg": "ui/icon_cyber_coin.svg",
+      "png": "ui/png/icon_cyber_coin.png"
+    },
+    {
+      "name": "icon_quantum_gem",
+      "width": 64,
+      "height": 64,
+      "svg": "ui/icon_quantum_gem.svg",
+      "png": "ui/png/icon_quantum_gem.png"
+    },
+    {
+      "name": "panel_bottom_dock",
+      "width": 1200,
+      "height": 104,
+      "svg": "ui/panel_bottom_dock.svg",
+      "png": "ui/png/panel_bottom_dock.png"
+    }
+  ]
+}
