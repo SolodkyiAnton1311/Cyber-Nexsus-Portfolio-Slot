@@ -1,6 +1,9 @@
 import cors from 'cors';
 import 'dotenv/config';
 import express, { type ErrorRequestHandler } from 'express';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import helmet from 'helmet';
 import { ErrorCode } from './game/interface.js';
 import { createApiRouter } from './routes/api.js';
@@ -9,6 +12,9 @@ interface ErrorWithType extends Error {
   type?: string;
 }
 
+const currentDir = path.dirname(fileURLToPath(import.meta.url));
+const defaultClientDist = path.resolve(currentDir, '../../..', 'client', 'dist');
+
 export function createApp() {
   const app = express();
   const allowedOrigins = (process.env.CLIENT_ORIGINS ?? 'http://localhost:8080')
@@ -16,8 +22,10 @@ export function createApp() {
     .map((origin) => origin.trim())
     .filter(Boolean);
 
+  app.set('trust proxy', 1);
   app.disable('x-powered-by');
-  app.use(helmet());
+  // Disable strict default CSP when serving PixiJS WebGL + Google Fonts + SVG assets
+  app.use(helmet({ contentSecurityPolicy: false }));
   app.use(cors({
     origin(origin, callback) {
       if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
@@ -30,6 +38,17 @@ export function createApp() {
     response.json({ status: 'ok' });
   });
   app.use('/api', createApiRouter());
+
+  // Optionally serve the built PixiJS client on the same origin (used in Render production deploy)
+  if (process.env.SERVE_CLIENT === 'true') {
+    const clientDist = process.env.CLIENT_DIST_DIR || defaultClientDist;
+    if (fs.existsSync(clientDist)) {
+      app.use(express.static(clientDist));
+      app.get('/{*splat}', (_request, response) => {
+        response.sendFile(path.join(clientDist, 'index.html'));
+      });
+    }
+  }
 
   app.use((_request, response) => {
     response.status(404).json({

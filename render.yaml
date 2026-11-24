@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: demo-slot
+    runtime: node
+    plan: free
+    region: frankfurt
+    healthCheckPath: /healthz
+    buildCommand: npm --prefix server ci && npm --prefix client ci && npm run build
+    startCommand: npm --prefix server start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: SERVE_CLIENT
+        value: "true"

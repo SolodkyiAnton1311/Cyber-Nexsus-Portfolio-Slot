@@ -1,6 +1,6 @@
 import type { CheatMode, SlotConfigResponse, SpinResponse } from '../types/api';
 
-const API_BASE = '/api';
+const API_BASE = `${(import.meta.env.VITE_API_URL ?? '').replace(/\/$/, '')}/api`;
 
 export async function fetchConfig(): Promise<SlotConfigResponse> {
   const res = await fetch(`${API_BASE}/config`);
