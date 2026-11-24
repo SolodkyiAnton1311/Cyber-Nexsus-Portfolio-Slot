@@ -7,6 +7,8 @@
 ![Vite](https://img.shields.io/badge/Vite-6-646CFF?logo=vite&logoColor=white)
 ![Theoretical RTP](https://img.shields.io/badge/Theoretical_RTP-96.10%25-00C896)
 
+**Live Demo:** https://demo-slot-h57y.onrender.com/
+
 A full-stack **5×3, 10-payline video slot** built from scratch with **TypeScript**, **Node.js (Express)**, and **PixiJS v8**, featuring a custom high-tech vector sprite kit, server-authoritative game math, independent client-side win verification, Free Games with retriggers, Buy Bonus, and a high-speed Monte Carlo RTP simulator.
 
 > **Portfolio / Educational Demo:** This project is a technical demonstration of iGaming client/server architecture and slot mathematics. It uses a local demo balance only — there is no real-money wagering, user accounts, or payment processing.
