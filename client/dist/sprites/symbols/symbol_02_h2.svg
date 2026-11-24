@@ -1,0 +1,136 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  
+  <defs>
+    <filter id="glow-cyan" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="8" result="blur1"/>
+      <feGaussianBlur stdDeviation="3" result="blur2"/>
+      <feMerge>
+        <feMergeNode in="blur1"/>
+        <feMergeNode in="blur2"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="glow-Strong" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="12" result="blur1"/>
+      <feGaussianBlur stdDeviation="4" result="blur2"/>
+      <feMerge>
+        <feMergeNode in="blur1"/>
+        <feMergeNode in="blur2"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="drop-shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#000511" flood-opacity="0.85"/>
+    </filter>
+    <linearGradient id="dark-metal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1b2845"/>
+      <stop offset="50%" stop-color="#0d1527"/>
+      <stop offset="100%" stop-color="#060a14"/>
+    </linearGradient>
+    <linearGradient id="chrome-bevel" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e0f7ff"/>
+      <stop offset="25%" stop-color="#7fa6c9"/>
+      <stop offset="50%" stop-color="#2c4263"/>
+      <stop offset="85%" stop-color="#8cb8de"/>
+      <stop offset="100%" stop-color="#16243b"/>
+    </linearGradient>
+    <linearGradient id="gold-cyber" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff6a9"/>
+      <stop offset="30%" stop-color="#ffd000"/>
+      <stop offset="70%" stop-color="#ff7b00"/>
+      <stop offset="100%" stop-color="#9e3600"/>
+    </linearGradient>
+    <linearGradient id="magenta-cyber" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffb8ff"/>
+      <stop offset="35%" stop-color="#ff2cdf"/>
+      <stop offset="75%" stop-color="#a800ff"/>
+      <stop offset="100%" stop-color="#3c0078"/>
+    </linearGradient>
+    <linearGradient id="cyan-cyber" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e0ffff"/>
+      <stop offset="35%" stop-color="#00f0ff"/>
+      <stop offset="75%" stop-color="#0077ff"/>
+      <stop offset="100%" stop-color="#002663"/>
+    </linearGradient>
+    <linearGradient id="emerald-cyber" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d4ffea"/>
+      <stop offset="30%" stop-color="#00ff88"/>
+      <stop offset="75%" stop-color="#009e52"/>
+      <stop offset="100%" stop-color="#00381d"/>
+    </linearGradient>
+    <linearGradient id="crimson-cyber" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffd6d6"/>
+      <stop offset="30%" stop-color="#ff2a54"/>
+      <stop offset="75%" stop-color="#b80028"/>
+      <stop offset="100%" stop-color="#42000e"/>
+    </linearGradient>
+    <linearGradient id="glass-sheen" x1="0%" y1="0%" x2="70%" y2="70%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.35"/>
+      <stop offset="45%" stop-color="#ffffff" stop-opacity="0.06"/>
+      <stop offset="50%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <pattern id="hex-grid" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M12 0 L24 7 L24 17 L12 24 L0 17 L0 7 Z" fill="none" stroke="#00f0ff" stroke-width="0.7" stroke-opacity="0.16"/>
+    </pattern>
+  </defs>
+
+  
+      
+    <!-- Outer Glow -->
+    <rect x="18" y="18" width="220" height="220" rx="34" fill="none" stroke="#ff2cdf" stroke-width="5" opacity="0.55" filter="url(#glow-cyan)"/>
+    <!-- Base Metallic Chassis -->
+    <rect x="16" y="16" width="224" height="224" rx="34" fill="url(#dark-metal)" stroke="url(#magenta-cyber)" stroke-width="7" filter="url(#drop-shadow)"/>
+    <!-- Inner Cyber Background -->
+    <rect x="28" y="28" width="200" height="200" rx="24" fill="#1a0a28"/>
+    <rect x="28" y="28" width="200" height="200" rx="24" fill="url(#hex-grid)"/>
+    <!-- Circuit Traces -->
+    <g stroke="#ff2cdf" stroke-width="1.5" opacity="0.3" fill="none">
+      <path d="M40 50 L65 50 L78 63 L110 63"/>
+      <circle cx="113" cy="63" r="2.5" fill="#ff2cdf"/>
+      <path d="M216 195 L185 195 L172 182 L145 182"/>
+      <circle cx="142" cy="182" r="2.5" fill="#ff2cdf"/>
+      <path d="M50 210 L50 180 L65 165"/>
+      <path d="M204 45 L204 75 L189 90"/>
+    </g>
+    <!-- Tech Corner Brackets -->
+    <g fill="#00f0ff" opacity="0.9">
+      <path d="M24 48 L24 32 Q24 24 32 24 L48 24 L48 30 L32 30 Q30 30 30 32 L30 48 Z"/>
+      <path d="M208 24 L224 24 Q232 24 232 32 L232 48 L226 48 L226 32 Q226 30 224 30 L208 30 Z"/>
+      <path d="M24 208 L24 224 Q24 232 32 232 L48 232 L48 226 L32 226 Q30 226 30 224 L30 208 Z"/>
+      <path d="M208 232 L224 232 Q232 232 232 224 L232 208 L226 208 L226 224 Q226 226 224 226 L208 226 Z"/>
+    </g>
+    <!-- Top/Bottom LED notches -->
+    <rect x="104" y="15" width="48" height="6" rx="3" fill="#ff2cdf" filter="url(#glow-cyan)"/>
+    <rect x="104" y="235" width="48" height="6" rx="3" fill="#ff2cdf" filter="url(#glow-cyan)"/>
+  
+      <!-- Sci-Fi Plasma Blaster Pistol -->
+      <g filter="url(#drop-shadow)" transform="translate(-2, 4) rotate(-14 128 128)">
+        <!-- Muzzle Plasma Flash / Bolt -->
+        <polygon points="196,104 218,98 206,108 224,114 204,118 214,128 194,118" fill="#00f0ff" filter="url(#glow-Strong)"/>
+        <circle cx="200" cy="111" r="7" fill="#ffffff"/>
+        <!-- Ergonomic Handle / Grip -->
+        <polygon points="64,132 98,132 88,186 52,182" fill="url(#dark-metal)" stroke="url(#chrome-bevel)" stroke-width="3"/>
+        <polygon points="66,142 88,142 82,176 60,174" fill="url(#magenta-cyber)" opacity="0.85"/>
+        <!-- Trigger Guard & Trigger -->
+        <path d="M96 134 L122 134 Q126 154 108 156 L92 156" fill="none" stroke="url(#chrome-bevel)" stroke-width="4"/>
+        <path d="M104 134 Q108 144 102 150" fill="none" stroke="#00f0ff" stroke-width="3.5" stroke-linecap="round"/>
+        <!-- Top Holographic Scope -->
+        <rect x="86" y="74" width="44" height="14" rx="5" fill="url(#dark-metal)" stroke="#00f0ff" stroke-width="2"/>
+        <rect x="102" y="88" width="12" height="8" fill="url(#chrome-bevel)"/>
+        <circle cx="128" cy="81" r="4" fill="#ff2cdf" filter="url(#glow-cyan)"/>
+        <!-- Main Receiver Chassis -->
+        <path d="M54 98 L142 94 L152 104 L152 128 L138 136 L58 136 L48 120 Z" fill="url(#chrome-bevel)" stroke="#ffffff" stroke-width="2"/>
+        <!-- Glowing Energy Core Inside Receiver -->
+        <rect x="68" y="106" width="58" height="16" rx="6" fill="#090314" stroke="#ff2cdf" stroke-width="2"/>
+        <rect x="72" y="110" width="50" height="8" rx="4" fill="url(#magenta-cyber)" filter="url(#glow-cyan)"/>
+        <!-- Barrel & Plasma Accelerator Coils -->
+        <rect x="148" y="102" width="46" height="18" rx="4" fill="url(#dark-metal)" stroke="#00f0ff" stroke-width="2"/>
+        <rect x="156" y="96" width="7" height="30" rx="3" fill="url(#cyan-cyber)" filter="url(#glow-cyan)"/>
+        <rect x="169" y="97" width="7" height="28" rx="3" fill="url(#cyan-cyber)" filter="url(#glow-cyan)"/>
+        <rect x="182" y="99" width="7" height="24" rx="3" fill="url(#gold-cyber)"/>
+        <!-- Flared Muzzle Emitter -->
+        <polygon points="190,100 202,95 202,127 190,122" fill="url(#chrome-bevel)" stroke="#00f0ff" stroke-width="2"/>
+      </g>
+      <rect x="28" y="28" width="200" height="90" rx="24" fill="url(#glass-sheen)"/>
+    
+</svg>

@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CYBER NEXUS // High-Tech Slot Sprites Showcase</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #040814;
+      --panel-bg: rgba(9, 19, 38, 0.85);
+      --cyan: #00f0ff;
+      --magenta: #ff2cdf;
+      --gold: #ffd000;
+      --emerald: #00ff88;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: radial-gradient(circle at 50% 20%, #0d1e3a 0%, #050a17 65%, #02040a 100%);
+      color: #e4f3ff;
+      font-family: 'Rajdhani', sans-serif;
+      min-height: 100vh;
+      padding: 28px;
+    }
+    h1, h2, h3, .orbitron {
+      font-family: 'Orbitron', sans-serif;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .header h1 {
+      font-size: 28px;
+      letter-spacing: 3px;
+      color: var(--cyan);
+      text-shadow: 0 0 18px rgba(0, 240, 255, 0.55);
+      margin-bottom: 8px;
+    }
+    .header p {
+      color: #9ab8d9;
+      font-size: 18px;
+    }
+
+    /* Reference Layout Mockup composed 100% from separate sprites */
+    .mockup-wrapper {
+      max-width: 1240px;
+      margin: 0 auto 44px auto;
+      background: url('./machine/bg_cyber_stage.svg') no-repeat center / cover;
+      border: 2px solid rgba(0, 240, 255, 0.4);
+      border-radius: 22px;
+      box-shadow: 0 0 50px rgba(0, 240, 255, 0.18), inset 0 0 60px rgba(0, 0, 0, 0.7);
+      padding: 12px 18px 14px;
+      position: relative;
+      overflow: hidden;
+    }
+    .mockup-badge {
+      display: inline-block;
+      background: rgba(4, 10, 24, 0.78);
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      letter-spacing: 2px;
+      padding: 4px 12px;
+      border-radius: 99px;
+      margin-bottom: 10px;
+    }
+    /* Top HUD Bar matching reference photo */
+    .hud-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 8px;
+      padding: 6px 14px;
+      background: rgba(4, 10, 24, 0.82);
+      border: 1px solid rgba(0, 240, 255, 0.28);
+      border-radius: 14px;
+      backdrop-filter: blur(4px);
+    }
+    .hud-meter {
+      position: relative;
+      display: flex;
+      align-items: center;
+      height: 54px;
+      padding: 0 22px 0 58px;
+      background: url('./ui/panel_display_meter.svg') no-repeat center / 100% 100%;
+      min-width: 230px;
+    }
+    .hud-meter img.icon {
+      position: absolute;
+      left: 8px;
+      width: 42px;
+      height: 42px;
+    }
+    .hud-meter .val {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 800;
+      font-size: 20px;
+      color: #fff;
+      text-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
+    }
+    .hud-sale {
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(180deg, #00f0ff, #0066ff);
+      color: #020816;
+      font-weight: 900;
+      padding: 8px 26px;
+      border-radius: 14px;
+      letter-spacing: 2px;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
+    }
+
+    /* Center Stage: 5x3 Reel Machine + Left/Right 10 LINES Badges */
+    .stage-center {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 4px 0 8px;
+    }
+    .side-badge {
+      width: 112px;
+      height: 112px;
+      z-index: 4;
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.85));
+    }
+    .side-badge.left { margin-right: -20px; }
+    .side-badge.right { margin-left: -20px; }
+
+    .reel-machine {
+      position: relative;
+      width: 880px;
+      height: 544px;
+      background: url('./machine/reel_frame_5x3.svg') no-repeat center / 100% 100%;
+      padding: 36px 36px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 6px;
+      align-items: center;
+      justify-items: center;
+    }
+    .reel-cell {
+      position: relative;
+      width: 148px;
+      height: 148px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .reel-cell img.sym {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transition: transform 0.2s ease;
+    }
+    .reel-cell:hover img.sym {
+      transform: scale(1.07);
+    }
+    .reel-cell img.win-frame {
+      position: absolute;
+      inset: -4px;
+      width: calc(100% + 8px);
+      height: calc(100% + 8px);
+      pointer-events: none;
+    }
+    /* Laser Dividers between the 5 reels */
+    .laser-divider {
+      position: absolute;
+      top: 34px;
+      bottom: 34px;
+      width: 22px;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    /* Bottom Control Bar — full armored console dock, zero empty space */
+    .hud-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 14px 30px 10px;
+      background: url('./ui/panel_bottom_dock.svg') no-repeat center / 100% 100%;
+      position: relative;
+      z-index: 5;
+      margin-top: -6px;
+    }
+    .util-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .util-controls img.btn {
+      height: 52px;
+      width: auto;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .util-controls img.btn:hover {
+      transform: scale(1.06);
+    }
+    .bet-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .bet-controls img.btn {
+      height: 52px;
+      width: auto;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .bet-controls img.btn:hover, .spin-btn:hover {
+      transform: scale(1.06);
+    }
+    .bet-readout {
+      text-align: center;
+      min-width: 132px;
+      padding: 5px 10px;
+      background: #060f21;
+      border: 1px solid rgba(0, 240, 255, 0.45);
+      border-radius: 10px;
+      box-shadow: inset 0 0 12px rgba(0, 240, 255, 0.15);
+    }
+    .bet-readout .val {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--cyan);
+    }
+    .bet-readout .lbl {
+      font-size: 10px;
+      letter-spacing: 1.2px;
+      color: #88a8cc;
+    }
+    .win-banner {
+      flex: 1;
+      min-width: 0;
+      height: 70px;
+      background: url('./ui/panel_win_display.svg') no-repeat center / 100% 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .win-banner .lbl {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: #7ee8ff;
+      margin-bottom: -2px;
+    }
+    .win-banner .val {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--emerald);
+      text-shadow: 0 0 12px rgba(0, 255, 136, 0.6);
+    }
+    .spin-btn {
+      width: 238px;
+      height: 80px;
+      cursor: pointer;
+      transition: transform 0.15s;
+      filter: drop-shadow(0 0 20px rgba(0, 255, 136, 0.5));
+      flex-shrink: 0;
+    }
+
+    /* Section Grid for individual sprites */
+    .section-title {
+      max-width: 1240px;
+      margin: 36px auto 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(0, 240, 255, 0.25);
+      padding-bottom: 10px;
+    }
+    .section-title h2 {
+      font-size: 20px;
+      color: var(--cyan);
+      letter-spacing: 2px;
+    }
+    .sprite-grid {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .sprite-card {
+      background: var(--panel-bg);
+      border: 1px solid rgba(0, 240, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .sprite-card:hover {
+      border-color: var(--cyan);
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px rgba(0, 240, 255, 0.14);
+    }
+    .checkerboard {
+      width: 168px;
+      height: 168px;
+      border-radius: 14px;
+      background-image:
+        linear-gradient(45deg, #0a1326 25%, transparent 25%),
+        linear-gradient(-45deg, #0a1326 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #0a1326 75%),
+        linear-gradient(-45deg, transparent 75%, #0a1326 75%);
+      background-size: 20px 20px;
+      background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+      background-color: #060b17;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      margin-bottom: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+    .checkerboard img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    .sym-id {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      padding: 2px 9px;
+      border-radius: 99px;
+      background: rgba(0, 240, 255, 0.15);
+      color: var(--cyan);
+      margin-bottom: 6px;
+    }
+    .sprite-card h3 {
+      font-size: 14px;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .payout-tag {
+      font-size: 13px;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .file-path {
+      font-family: monospace;
+      font-size: 11px;
+      color: #7b9ec4;
+      background: rgba(0, 0, 0, 0.45);
+      padding: 4px 8px;
+      border-radius: 6px;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin-bottom: 10px;
+    }
+    .btn-row {
+      display: flex;
+      gap: 8px;
+      width: 100%;
+    }
+    .dl-btn {
+      flex: 1;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      padding: 6px 8px;
+      border-radius: 8px;
+      border: 1px solid var(--cyan);
+      background: rgba(0, 240, 255, 0.1);
+      color: var(--cyan);
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .dl-btn:hover {
+      background: var(--cyan);
+      color: #030914;
+      font-weight: 800;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>CYBER NEXUS // HIGH-TECH SLOT SPRITE KIT</h1>
+    <p>Все 13 символов сервера (ID 0–12) + отдельные спрайты рамки 5×3, лазерных разделителей, бейджей и UI по референсу</p>
+  </div>
+
+  <!-- Interactive Assembly Preview showing how the separate sprites fit the reference screenshot -->
+  <div class="mockup-wrapper">
+    <span class="mockup-badge">COMPOSITE PREVIEW // СОБРАНО ИЗ ОТДЕЛЬНЫХ СПРАЙТОВ ПО РЕФЕРЕНСУ</span>
+
+    <!-- Top HUD Bar -->
+    <div class="hud-top">
+      <div class="hud-meter">
+        <img class="icon" src="./ui/icon_quantum_gem.svg" alt="Gem" />
+        <span class="val">9</span>
+      </div>
+      <div class="hud-sale">CYBER CORE // 5×3</div>
+      <div class="hud-meter">
+        <img class="icon" src="./ui/icon_cyber_coin.svg" alt="Coin" />
+        <span class="val">79,932,897</span>
+      </div>
+      <img src="./ui/btn_info.svg" alt="Info" style="width:48px;height:48px;" />
+    </div>
+
+    <!-- Center 5x3 Reels with Left & Right Badges and 4 Laser Dividers -->
+    <div class="stage-center">
+      <img class="side-badge left" src="./machine/badge_10_paylines.svg" alt="10 Lines" />
+
+      <div class="reel-machine">
+        <!-- 4 Separate Laser Dividers between 5 columns -->
+        <img class="laser-divider" style="left: 196px;" src="./machine/reel_divider_laser.svg" alt="Divider 1" />
+        <img class="laser-divider" style="left: 356px;" src="./machine/reel_divider_laser.svg" alt="Divider 2" />
+        <img class="laser-divider" style="left: 514px;" src="./machine/reel_divider_laser.svg" alt="Divider 3" />
+        <img class="laser-divider" style="left: 672px;" src="./machine/reel_divider_laser.svg" alt="Divider 4" />
+
+        <!-- Row 1 -->
+        <div class="reel-cell"><img class="sym" src="./symbols/symbol_10_l5.svg" alt="10" /></div>
+        <div class="reel-cell"><img class="sym" src="./symbols/symbol_09_l4.svg" alt="J" /></div>
+        <div class="reel-cell"><img class="sym" src="./symbols/symbol_04_m2.svg" alt="M2" /></div>
+        <div class="reel-cell">
+          <img class="sym" src="./symbols/symbol_01_h1.svg" alt="H1" />
+          <img class="win-frame" src="./machine/win_cell_frame.svg" alt="Win" />
+        </div>
+        <div class="reel-cell"><img class="sym" src="./symbols/symbol_06_l1.svg" alt="A" /></div>
+
+        <!-- Row 2 (Payline 1 highlighted) -->
+        <div class="reel-cell"><img class="sym" src="./symbols/symbol_07_l2.svg" alt="K" /></div>
+        <div class="reel-cell"><img class="sym" src="./symbols/symbol_00_wild.svg" alt="Wild" /><img class="win-frame" src="./machine/win_cell_frame.svg" alt="Win" /></div>
+        <div class="reel-cell"><img class="sym" src="./symbols/symbol_01_h1.svg" alt="H1" /><img class="win-frame" src="./machine/win_cell_frame.svg" alt="Win" /></div>
+        <div class="reel-cell"><img class="sym" src="./symbols/symbol_07_l2.svg" alt="K" /></div>
+        <div class="reel-cell"><img class="sym" src="./symbols/symbol_12_scatter.svg" alt="Scatter" /></div>
+
+        <!-- Row 3 -->
+        <div class="reel-cell"><img class="sym" src="./symbols/symbol_05_m3.svg" alt="M3" /></div>
+        <div class="reel-cell"><img class="sym" src="./symbols/symbol_03_m1.svg" alt="M1" /></div>
+        <div class="reel-cell"><img class="sym" src="./symbols/symbol_02_h2.svg" alt="H2" /></div>
+        <div class="reel-cell"><img class="sym" src="./symbols/symbol_08_l3.svg" alt="Q" /></div>
+        <div class="reel-cell"><img class="sym" src="./symbols/symbol_11_l6.svg" alt="9" /></div>
+      </div>
+
+      <img class="side-badge right" src="./machine/badge_10_paylines.svg" alt="10 Lines" />
+    </div>
+
+    <!-- Bottom HUD Controls -->
+    <div class="hud-bottom">
+      <div class="bet-controls">
+        <img class="btn" src="./ui/btn_minus.svg" alt="Minus" />
+        <div class="bet-readout">
+          <div class="val">250</div>
+          <div class="lbl">BET (25 × 10)</div>
+        </div>
+        <img class="btn" src="./ui/btn_plus.svg" alt="Plus" />
+        <img class="btn" src="./ui/btn_max_bet.svg" alt="Max Bet" />
+      </div>
+
+      <div class="win-banner">
+        <div class="lbl">LAST WIN</div>
+        <div class="val">4,600</div>
+      </div>
+
+      <img class="spin-btn" src="./ui/btn_spin.svg" alt="SPIN" />
+    </div>
+  </div>
+
+  <!-- 13 Game Symbols Catalog -->
+  <div class="section-title">
+    <h2>1. ВСЕ 13 СИМВОЛОВ СЕРВЕРА (ОТДЕЛЬНЫЕ СПРАЙТЫ 256×256)</h2>
+    <span>assets/sprites/symbols/</span>
+  </div>
+  <div class="sprite-grid" id="symbols-grid"></div>
+
+  <!-- Machine & UI Separate Sprites Catalog -->
+  <div class="section-title">
+    <h2>2. ОТДЕЛЬНЫЕ СПРАЙТЫ КОРПУСА, РАМКИ И UI</h2>
+    <span>assets/sprites/machine/ &amp; assets/sprites/ui/</span>
+  </div>
+  <div class="sprite-grid" id="ui-grid"></div>
+
+  <script>
+    const symbolsData = [
+      { id: 0, code: 'WILD', name: 'WW // Quantum AI Core', tier: 'SPECIAL', payout: 'Заменяет L/M/H', file: 'symbols/symbol_00_wild.svg' },
+      { id: 1, code: 'H1', name: 'H1 // Космическая Ракета', tier: 'HIGH', payout: '3x: 184 | 4x: 612 | 5x: 2447', file: 'symbols/symbol_01_h1.svg' },
+      { id: 2, code: 'H2', name: 'H2 // Плазменный Бластер', tier: 'HIGH', payout: '3x: 184 | 4x: 612 | 5x: 2447', file: 'symbols/symbol_02_h2.svg' },
+      { id: 3, code: 'M1', name: 'M1 // Джетпак', tier: 'MEDIUM', payout: '3x: 80 | 4x: 275 | 5x: 1040', file: 'symbols/symbol_03_m1.svg' },
+      { id: 4, code: 'M2', name: 'M2 // Энерго-Батарея', tier: 'MEDIUM', payout: '3x: 80 | 4x: 275 | 5x: 1040', file: 'symbols/symbol_04_m2.svg' },
+      { id: 5, code: 'M3', name: 'M3 // Квантовый Микрочип', tier: 'MEDIUM', payout: '3x: 80 | 4x: 275 | 5x: 1040', file: 'symbols/symbol_05_m3.svg' },
+      { id: 6, code: 'L1', name: 'L1 // Cyber Glyph A', tier: 'LOW', payout: '3x: 31 | 4x: 110 | 5x: 427', file: 'symbols/symbol_06_l1.svg' },
+      { id: 7, code: 'L2', name: 'L2 // Cyber Glyph K', tier: 'LOW', payout: '3x: 31 | 4x: 110 | 5x: 427', file: 'symbols/symbol_07_l2.svg' },
+      { id: 8, code: 'L3', name: 'L3 // Cyber Glyph Q', tier: 'LOW', payout: '3x: 31 | 4x: 110 | 5x: 427', file: 'symbols/symbol_08_l3.svg' },
+      { id: 9, code: 'L4', name: 'L4 // Cyber Glyph J', tier: 'LOW', payout: '3x: 31 | 4x: 110 | 5x: 427', file: 'symbols/symbol_09_l4.svg' },
+      { id: 10, code: 'L5', name: 'L5 // Cyber Glyph 10', tier: 'LOW', payout: '3x: 31 | 4x: 110 | 5x: 427', file: 'symbols/symbol_10_l5.svg' },
+      { id: 11, code: 'L6', name: 'L6 // Cyber Glyph 9', tier: 'LOW', payout: '3x: 31 | 4x: 110 | 5x: 427', file: 'symbols/symbol_11_l6.svg' },
+      { id: 12, code: 'SCATTER', name: 'SC // Singularity Portal', tier: 'SPECIAL', payout: '3x: 5 FG | 4x: 10 FG | 5x: 15 FG', file: 'symbols/symbol_12_scatter.svg' },
+    ];
+
+    const uiData = [
+      { tag: 'BG 1600×900', name: 'Фон сцены (Cyber City)', file: 'machine/bg_cyber_stage.svg', w: 1600, h: 900 },
+      { tag: 'FRAME 1100×680', name: 'Корпус барабанов 5×3', file: 'machine/reel_frame_5x3.svg', w: 1100, h: 680 },
+      { tag: 'DIVIDER 32×600', name: 'Лазерный разделитель рилов', file: 'machine/reel_divider_laser.svg', w: 32, h: 600 },
+      { tag: 'BADGE 160×160', name: 'Квадратный бейдж 10 LINES', file: 'machine/badge_10_paylines.svg', w: 160, h: 160 },
+      { tag: 'FX 256×256', name: 'Рамка выигрышной ячейки', file: 'machine/win_cell_frame.svg', w: 256, h: 256 },
+      { tag: 'BUTTON 320×112', name: 'Широкая кнопка SPIN', file: 'ui/btn_spin.svg', w: 320, h: 112 },
+      { tag: 'BUTTON 80×80', name: 'Кнопка уменьшения ставки (-)', file: 'ui/btn_minus.svg', w: 80, h: 80 },
+      { tag: 'BUTTON 80×80', name: 'Кнопка увеличения ставки (+)', file: 'ui/btn_plus.svg', w: 80, h: 80 },
+      { tag: 'BUTTON 110×80', name: 'Кнопка MAX BET', file: 'ui/btn_max_bet.svg', w: 110, h: 80 },
+      { tag: 'DOCK 1200×104', name: 'Нижняя консоль управления', file: 'ui/panel_bottom_dock.svg', w: 1200, h: 104 },
+      { tag: 'BUTTON 72×72', name: 'Кнопка Инфо / Таблица (i)', file: 'ui/btn_info.svg', w: 72, h: 72 },
+      { tag: 'PANEL 380×84', name: 'Дисплей баланса (верхний HUD)', file: 'ui/panel_display_meter.svg', w: 380, h: 84 },
+      { tag: 'PANEL 680×84', name: 'Широкий дисплей LAST WIN', file: 'ui/panel_win_display.svg', w: 680, h: 84 },
+      { tag: 'ICON 64×64', name: 'Иконка кредитов (Cyber Coin)', file: 'ui/icon_cyber_coin.svg', w: 64, h: 64 },
+      { tag: 'ICON 64×64', name: 'Иконка кристалла (Quantum Gem)', file: 'ui/icon_quantum_gem.svg', w: 64, h: 64 },
+    ];
+
+    function downloadPNG(svgUrl, width, height, outName) {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        canvas.toBlob((blob) => {
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = outName;
+          a.click();
+        }, 'image/png');
+      };
+      img.src = svgUrl;
+    }
+
+    const symGrid = document.getElementById('symbols-grid');
+    for (const s of symbolsData) {
+      const pngName = s.file.split('/').pop().replace('.svg', '.png');
+      const card = document.createElement('div');
+      card.className = 'sprite-card';
+      card.innerHTML = `
+        <div class="checkerboard"><img src="./${s.file}" alt="${s.name}" /></div>
+        <span class="sym-id">ID: ${s.id} // ${s.tier}</span>
+        <h3>${s.name}</h3>
+        <div class="payout-tag">${s.payout}</div>
+        <div class="file-path">${s.file}</div>
+        <div class="btn-row">
+          <a class="dl-btn" href="./${s.file}" download>SVG</a>
+          <button class="dl-btn" onclick="downloadPNG('./${s.file}', 512, 512, '${pngName}')">PNG 512px</button>
+        </div>
+      `;
+      symGrid.appendChild(card);
+    }
+
+    const uiGrid = document.getElementById('ui-grid');
+    for (const u of uiData) {
+      const pngName = u.file.split('/').pop().replace('.svg', '.png');
+      const card = document.createElement('div');
+      card.className = 'sprite-card';
+      card.innerHTML = `
+        <div class="checkerboard"><img src="./${u.file}" alt="${u.name}" /></div>
+        <span class="sym-id">${u.tag}</span>
+        <h3>${u.name}</h3>
+        <div class="file-path">${u.file}</div>
+        <div class="btn-row">
+          <a class="dl-btn" href="./${u.file}" download>SVG</a>
+          <button class="dl-btn" onclick="downloadPNG('./${u.file}', ${u.w * 2}, ${u.h * 2}, '${pngName}')">PNG 2x</button>
+        </div>
+      `;
+      uiGrid.appendChild(card);
+    }
+  </script>
+</body>
+</html>

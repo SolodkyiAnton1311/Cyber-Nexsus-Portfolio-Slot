@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  
+  <defs>
+    <filter id="glow-cyan" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="8" result="blur1"/>
+      <feGaussianBlur stdDeviation="3" result="blur2"/>
+      <feMerge>
+        <feMergeNode in="blur1"/>
+        <feMergeNode in="blur2"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="glow-Strong" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="12" result="blur1"/>
+      <feGaussianBlur stdDeviation="4" result="blur2"/>
+      <feMerge>
+        <feMergeNode in="blur1"/>
+        <feMergeNode in="blur2"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="drop-shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#000511" flood-opacity="0.85"/>
+    </filter>
+    <linearGradient id="dark-metal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1b2845"/>
+      <stop offset="50%" stop-color="#0d1527"/>
+      <stop offset="100%" stop-color="#060a14"/>
+    </linearGradient>
+    <linearGradient id="chrome-bevel" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e0f7ff"/>
+      <stop offset="25%" stop-color="#7fa6c9"/>
+      <stop offset="50%" stop-color="#2c4263"/>
+      <stop offset="85%" stop-color="#8cb8de"/>
+      <stop offset="100%" stop-color="#16243b"/>
+    </linearGradient>
+    <linearGradient id="gold-cyber" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff6a9"/>
+      <stop offset="30%" stop-color="#ffd000"/>
+      <stop offset="70%" stop-color="#ff7b00"/>
+      <stop offset="100%" stop-color="#9e3600"/>
+    </linearGradient>
+    <linearGradient id="magenta-cyber" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffb8ff"/>
+      <stop offset="35%" stop-color="#ff2cdf"/>
+      <stop offset="75%" stop-color="#a800ff"/>
+      <stop offset="100%" stop-color="#3c0078"/>
+    </linearGradient>
+    <linearGradient id="cyan-cyber" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e0ffff"/>
+      <stop offset="35%" stop-color="#00f0ff"/>
+      <stop offset="75%" stop-color="#0077ff"/>
+      <stop offset="100%" stop-color="#002663"/>
+    </linearGradient>
+    <linearGradient id="emerald-cyber" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d4ffea"/>
+      <stop offset="30%" stop-color="#00ff88"/>
+      <stop offset="75%" stop-color="#009e52"/>
+      <stop offset="100%" stop-color="#00381d"/>
+    </linearGradient>
+    <linearGradient id="crimson-cyber" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffd6d6"/>
+      <stop offset="30%" stop-color="#ff2a54"/>
+      <stop offset="75%" stop-color="#b80028"/>
+      <stop offset="100%" stop-color="#42000e"/>
+    </linearGradient>
+    <linearGradient id="glass-sheen" x1="0%" y1="0%" x2="70%" y2="70%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.35"/>
+      <stop offset="45%" stop-color="#ffffff" stop-opacity="0.06"/>
+      <stop offset="50%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <pattern id="hex-grid" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M12 0 L24 7 L24 17 L12 24 L0 17 L0 7 Z" fill="none" stroke="#00f0ff" stroke-width="0.7" stroke-opacity="0.16"/>
+    </pattern>
+  </defs>
+
+  
+      <circle cx="32" cy="32" r="28" fill="url(#gold-cyber)" stroke="#ffffff" stroke-width="2" filter="url(#drop-shadow)"/>
+      <circle cx="32" cy="32" r="21" fill="none" stroke="#9e3600" stroke-width="2" stroke-dasharray="10 4"/>
+      <text x="32" y="42" text-anchor="middle" font-family="'Orbitron', sans-serif" font-weight="900" font-size="28" fill="#fff9c4">₵</text>
+    
+</svg>
