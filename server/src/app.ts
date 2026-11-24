@@ -13,7 +13,7 @@ interface ErrorWithType extends Error {
 }
 
 const currentDir = path.dirname(fileURLToPath(import.meta.url));
-const defaultClientDist = path.resolve(currentDir, '../../..', 'client', 'dist');
+const defaultClientDist = path.resolve(currentDir, '../..', 'client', 'dist');
 
 export function createApp() {
   const app = express();

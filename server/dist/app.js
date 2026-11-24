@@ -8,7 +8,7 @@ import helmet from 'helmet';
 import { ErrorCode } from './game/interface.js';
 import { createApiRouter } from './routes/api.js';
 const currentDir = path.dirname(fileURLToPath(import.meta.url));
-const defaultClientDist = path.resolve(currentDir, '../../..', 'client', 'dist');
+const defaultClientDist = path.resolve(currentDir, '../..', 'client', 'dist');
 export function createApp() {
     const app = express();
     const allowedOrigins = (process.env.CLIENT_ORIGINS ?? 'http://localhost:8080')
