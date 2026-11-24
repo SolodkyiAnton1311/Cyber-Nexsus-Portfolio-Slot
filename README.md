@@ -228,23 +228,6 @@ Sample output (~440k spins/sec):
 
 ---
 
-## Deployment (Free Tier on Render.com)
-
-This repository includes a ready-to-use **[render.yaml](./render.yaml)** blueprint that builds both `server` and `client` and serves the entire app from a single HTTPS origin (`SERVE_CLIENT=true`):
-
-1. Push the repository to **GitHub**.
-2. Open **[render.com](https://render.com)** → **New + → Blueprint**.
-3. Select this repository and click **Apply**.
-
-### Optional: Docker (Server Only)
-
-```bash
-cd server
-docker build -t demo-slot-api .
-docker run --rm -p 3000:3000 -e CLIENT_ORIGINS=http://localhost:8080 demo-slot-api
-```
-
----
 
 ## License
 
