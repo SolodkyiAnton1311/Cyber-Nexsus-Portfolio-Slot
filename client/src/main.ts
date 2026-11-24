@@ -2,6 +2,7 @@ import { Application, Container, Graphics, Sprite, Text } from 'pixi.js';
 import { fetchConfig, requestBuyBonus, requestCheatSpin, requestSpin } from './api/slotApi';
 import { loadAssets } from './assets';
 import { BET_STEPS, FRAME_BOUNDS, INITIAL_BALANCE, STAGE_HEIGHT, STAGE_WIDTH } from './config';
+import { BuyBonusOverlay } from './game/BuyBonusOverlay';
 import { CheatPanel } from './game/CheatPanel';
 import { FreeGamesOverlay } from './game/FreeGamesOverlay';
 import { Meta } from './game/Meta';
@@ -12,6 +13,21 @@ import type { CheatMode } from './types/api';
 
 function delay(ms: number): Promise<void> {
   return new Promise((resolve) => window.setTimeout(resolve, ms));
+}
+
+async function loadFonts(): Promise<void> {
+  if (!('fonts' in document)) return;
+  try {
+    await Promise.all([
+      document.fonts.load('600 16px "Orbitron"'),
+      document.fonts.load('700 24px "Orbitron"'),
+      document.fonts.load('800 28px "Orbitron"'),
+      document.fonts.load('900 32px "Orbitron"'),
+    ]);
+    await document.fonts.ready;
+  } catch {
+    // Continue gracefully if Google Fonts is unreachable
+  }
 }
 
 function fitCanvas(canvas: HTMLCanvasElement): void {
@@ -41,7 +57,7 @@ async function bootstrap(): Promise<void> {
   const [assets, config] = await Promise.all([
     loadAssets(),
     fetchConfig(),
-    document.fonts.ready,
+    loadFonts(),
   ]);
   console.log('Loaded slot config:', config);
 
@@ -67,6 +83,9 @@ async function bootstrap(): Promise<void> {
   const freeGamesOverlay = new FreeGamesOverlay();
   world.addChild(freeGamesOverlay);
 
+  const buyBonusOverlay = new BuyBonusOverlay(config.freeGamesAwards[3]);
+  world.addChild(buyBonusOverlay);
+
   const cheatPanel = new CheatPanel((mode) => {
     if (isSpinning || autoSpin) return;
     void runSpinCycle({ cheat: mode });
@@ -77,6 +96,8 @@ async function bootstrap(): Promise<void> {
     if (e.ctrlKey && e.code === 'KeyD') {
       e.preventDefault();
       cheatPanel.toggle();
+    } else if (e.code === 'Escape' && buyBonusOverlay.opened) {
+      buyBonusOverlay.hide();
     }
   });
 
@@ -86,6 +107,7 @@ async function bootstrap(): Promise<void> {
     meta.update(dt);
     paytable.update(dt);
     freeGamesOverlay.update(dt);
+    buyBonusOverlay.update(dt);
     cheatPanel.update(dt);
   });
 
@@ -131,6 +153,7 @@ async function bootstrap(): Promise<void> {
   const refreshBetDisplay = (): void => {
     meta.setBet(getTotalBet());
     meta.setBuyBonusCost(getBonusBuyCost());
+    paytable.setBet(getLineBet(), getTotalBet());
   };
 
   const stopAutoSpin = (): void => {
@@ -314,8 +337,11 @@ async function bootstrap(): Promise<void> {
 
   meta.btnBuyBonus.on('pointertap', () => {
     if (isSpinning || autoSpin) return;
-    meta.triggerBuyBonusFlash();
-    void runSpinCycle({ isBonusBuy: true });
+    buyBonusOverlay.show(getBonusBuyCost(), balance, () => {
+      if (isSpinning || autoSpin) return;
+      meta.triggerBuyBonusFlash();
+      void runSpinCycle({ isBonusBuy: true });
+    });
   });
 
   // Hold SPIN (>= 550ms) to enable Auto-Spin; short tap to Spin / Slam-Stop / Stop Auto-Spin

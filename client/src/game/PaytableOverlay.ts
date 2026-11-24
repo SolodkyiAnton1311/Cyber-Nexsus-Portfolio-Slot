@@ -6,10 +6,20 @@ import type { SlotConfigResponse, SymbolInfo } from '../types/api';
 const PANEL_W = 1280;
 const PANEL_H = 760;
 
+interface PayoutRowEntry {
+  text: Text;
+  count: 3 | 4 | 5;
+  multiplier: number;
+  maxWidth: number;
+}
+
 export class PaytableOverlay extends Container {
   private readonly panel: Container;
   private readonly backdrop: Graphics;
   private readonly closeBtn: Container;
+  private readonly footerText: Text;
+  private readonly activePaylines: number;
+  private readonly payoutRows: PayoutRowEntry[] = [];
   private isOpen = false;
   private openProgress = 0;
   private closeHovered = false;
@@ -20,6 +30,7 @@ export class PaytableOverlay extends Container {
     super();
 
     this.visible = false;
+    this.activePaylines = config.wager.activePaylines;
 
     this.backdrop = new Graphics()
       .rect(0, 0, STAGE_WIDTH, STAGE_HEIGHT)
@@ -126,8 +137,8 @@ export class PaytableOverlay extends Container {
       panel.addChild(card);
     });
 
-    const footer = new Text({
-      text: `${config.wager.activePaylines} FIXED PAYLINES  •  PAYS LEFT TO RIGHT  •  MULTIPLIERS APPLY TO LINE BET`,
+    this.footerText = new Text({
+      text: `${config.wager.activePaylines} FIXED PAYLINES  •  PAYS LEFT TO RIGHT  •  PAYOUTS FOR BET ${config.wager.totalBetMultiplier}`,
       style: {
         fontFamily: 'Orbitron',
         fontSize: 13,
@@ -136,9 +147,21 @@ export class PaytableOverlay extends Container {
         letterSpacing: 2,
       },
     });
-    footer.anchor.set(0.5);
-    footer.position.set(PANEL_W / 2, PANEL_H - 30);
-    panel.addChild(footer);
+    this.footerText.anchor.set(0.5);
+    this.footerText.position.set(PANEL_W / 2, PANEL_H - 30);
+    panel.addChild(this.footerText);
+  }
+
+  public setBet(lineBet: number, totalBet: number): void {
+    for (const entry of this.payoutRows) {
+      const payout = entry.multiplier * lineBet;
+      entry.text.text = `${entry.count}x  ${payout.toLocaleString('en-US')}`;
+      entry.text.scale.set(1);
+      if (entry.text.width > entry.maxWidth) {
+        entry.text.scale.set(entry.maxWidth / entry.text.width);
+      }
+    }
+    this.footerText.text = `${this.activePaylines} FIXED PAYLINES  •  PAYS LEFT TO RIGHT  •  PAYOUTS FOR BET ${totalBet.toLocaleString('en-US')}`;
   }
 
   public show(): void {
@@ -280,10 +303,12 @@ export class PaytableOverlay extends Container {
     card.addChild(title);
 
     const counts = [5, 4, 3] as const;
+    const textX = 116;
+    const maxWidth = width - textX - 14;
     counts.forEach((count, row) => {
-      const value = multipliers[count - 3];
+      const multiplier = multipliers[count - 3];
       const line = new Text({
-        text: `${count}x   ${value.toLocaleString('en-US')}`,
+        text: `${count}x  ${multiplier.toLocaleString('en-US')}`,
         style: {
           fontFamily: 'Orbitron',
           fontSize: 16,
@@ -291,8 +316,9 @@ export class PaytableOverlay extends Container {
           fill: row === 0 ? '#ffd000' : '#00f0ff',
         },
       });
-      line.position.set(116, 44 + row * 28);
+      line.position.set(textX, 44 + row * 28);
       card.addChild(line);
+      this.payoutRows.push({ text: line, count, multiplier, maxWidth });
     });
 
     return card;
