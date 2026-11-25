@@ -1,4 +1,5 @@
 import { Container, Graphics, Sprite } from 'pixi.js';
+import { sound } from '../audio/SoundManager';
 import type { GameAssets } from '../assets';
 import { FRAME_BOUNDS } from '../config';
 import type { LineWin, SlotConfigResponse } from '../types/api';
@@ -101,14 +102,36 @@ export class SlotMachine extends Container {
   }
 
   public spinToStops(stops: readonly number[]): Promise<void> {
+    const scId = this.config.symbolInfo.find((s) => s.code === 'SC')?.id ?? 12;
+    let scattersLanded = 0;
+
     const animations = this.reels.map((reel, col) => {
       const spinDurationSec = 0.6 + col * 0.22;
-      return reel.spinTo(stops[col], spinDurationSec);
+      return reel.spinTo(stops[col], spinDurationSec).then(() => {
+        sound.playReelStop(col);
+
+        const strip = this.config.reelStrips[col];
+        const len = strip.length;
+        let hasScatter = false;
+        for (let r = 0; r < this.rows; r += 1) {
+          if (strip[(stops[col] + r) % len] === scId) {
+            hasScatter = true;
+            break;
+          }
+        }
+        if (hasScatter) {
+          scattersLanded += 1;
+          sound.playScatterLand(scattersLanded);
+        }
+      });
     });
-    return Promise.all(animations).then(() => undefined);
+    return Promise.all(animations).then(() => {
+      sound.stopSpinLoop();
+    });
   }
 
   public slamStop(): void {
+    sound.playSlamStop();
     for (const reel of this.reels) {
       reel.slamStop();
     }
@@ -118,15 +141,19 @@ export class SlotMachine extends Container {
     wins: readonly LineWin[],
     board?: readonly (readonly number[])[],
     highlightScatters = false,
-  ): void {
+  ): boolean {
     this.winOverlay.showWins(wins);
 
-    if (!board) return;
+    if (!board) return false;
 
     const wildId = this.config.symbolInfo.find((s) => s.code === 'WW')?.id ?? 0;
     const h1Id = this.config.symbolInfo.find((s) => s.code === 'H1')?.id ?? 1;
     const h2Id = this.config.symbolInfo.find((s) => s.code === 'H2')?.id ?? 2;
     const scId = this.config.symbolInfo.find((s) => s.code === 'SC')?.id ?? 12;
+
+    let hasWildWin = false;
+    let hasH1Win = false;
+    let hasH2Win = false;
 
     // Animate Wild, H1 (Rocket) & H2 (Blaster) symbols that participated in winning paylines
     for (const win of wins) {
@@ -137,16 +164,30 @@ export class SlotMachine extends Container {
         const symId = board[row][col];
         if (symId === wildId) {
           this.reels[col].animateRow(row, 'wild');
+          hasWildWin = true;
         } else if (symId === h1Id) {
           this.reels[col].animateRow(row, 'h1');
+          hasH1Win = true;
         } else if (symId === h2Id) {
           this.reels[col].animateRow(row, 'h2');
+          hasH2Win = true;
         }
       }
     }
 
+    if (hasH1Win) {
+      sound.playH1RocketWin();
+    }
+    if (hasH2Win) {
+      sound.playH2BlasterWin();
+    }
+    if (hasWildWin && !hasH1Win && !hasH2Win) {
+      sound.playWildWin();
+    }
+
     // Animate Scatter (Portal) symbols when 3+ Scatters triggered Free Games / Retrigger
     if (highlightScatters) {
+      sound.playScatterTrigger();
       for (let row = 0; row < this.rows; row += 1) {
         for (let col = 0; col < this.columns; col += 1) {
           if (board[row][col] === scId) {
@@ -155,6 +196,8 @@ export class SlotMachine extends Container {
         }
       }
     }
+
+    return hasWildWin || hasH1Win || hasH2Win;
   }
 
   public clearWins(): void {

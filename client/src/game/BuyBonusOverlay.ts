@@ -1,4 +1,5 @@
 import { Container, Graphics, Text } from 'pixi.js';
+import { sound } from '../audio/SoundManager';
 import { STAGE_HEIGHT, STAGE_WIDTH } from '../config';
 
 interface ModalButton {
@@ -31,7 +32,10 @@ export class BuyBonusOverlay extends Container {
       .rect(0, 0, STAGE_WIDTH, STAGE_HEIGHT)
       .fill({ color: 0x020612, alpha: 0.82 });
     this.backdrop.eventMode = 'static';
-    this.backdrop.on('pointertap', () => this.hide());
+    this.backdrop.on('pointertap', () => {
+      sound.playClick();
+      this.hide();
+    });
     this.addChild(this.backdrop);
 
     this.card = new Container();
@@ -129,6 +133,7 @@ export class BuyBonusOverlay extends Container {
     this.warningText.visible = false;
 
     this.cancelBtn = this.createButton('CANCEL', -126, 122, 210, 56, 0x101c33, 0x5c7fa3, '#cce6ff', () => {
+      sound.playClick();
       this.hide();
     });
 

@@ -34,6 +34,8 @@ export const HUD_LAYOUT = {
   coinSize: 52,
   infoBtnX: 1410,
   infoBtnSize: 64,
+  soundBtnX: 1490,
+  soundBtnSize: 64,
 
   dockX: STAGE_WIDTH / 2,
   dockY: 836,

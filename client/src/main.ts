@@ -1,6 +1,7 @@
 import { Application, Container, Graphics, Sprite, Text } from 'pixi.js';
 import { fetchConfig, requestBuyBonus, requestCheatSpin, requestSpin } from './api/slotApi';
 import { loadAssets } from './assets';
+import { sound } from './audio/SoundManager';
 import { BET_STEPS, FRAME_BOUNDS, INITIAL_BALANCE, STAGE_HEIGHT, STAGE_WIDTH } from './config';
 import { BuyBonusOverlay } from './game/BuyBonusOverlay';
 import { CheatPanel } from './game/CheatPanel';
@@ -92,7 +93,9 @@ async function bootstrap(): Promise<void> {
   });
   world.addChild(cheatPanel);
 
+  window.addEventListener('pointerdown', () => sound.unlock(), { passive: true });
   window.addEventListener('keydown', (e) => {
+    sound.unlock();
     if (e.ctrlKey && e.code === 'KeyD') {
       e.preventDefault();
       cheatPanel.toggle();
@@ -171,14 +174,21 @@ async function bootstrap(): Promise<void> {
   meta.setBalance(balance);
   refreshBetDisplay();
   meta.setWin(0);
+  meta.setMuted(sound.isMuted());
+
+  meta.btnSound.on('pointertap', () => {
+    meta.setMuted(sound.toggleMute());
+  });
 
   meta.btnInfo.on('pointertap', () => {
+    sound.playClick();
     paytable.toggle();
   });
 
   meta.btnPlus.on('pointertap', () => {
     if (betIndex < BET_STEPS.length - 1) {
       betIndex += 1;
+      sound.playBetUp(betIndex);
       refreshBetDisplay();
     }
   });
@@ -186,11 +196,13 @@ async function bootstrap(): Promise<void> {
   meta.btnMinus.on('pointertap', () => {
     if (betIndex > 0) {
       betIndex -= 1;
+      sound.playBetDown(betIndex);
       refreshBetDisplay();
     }
   });
 
   meta.btnMaxBet.on('pointertap', () => {
+    sound.playMaxBet();
     betIndex = BET_STEPS.length - 1;
     refreshBetDisplay();
   });
@@ -224,6 +236,7 @@ async function bootstrap(): Promise<void> {
       // Allow clicking SPIN while reels spin (slam-stop in manual, or stop-auto in auto mode)
       canSlamStop = true;
       meta.setSpinButtonEnabled(true);
+      sound.playSpinStart();
       await machine.spinToStops(result.stops);
       canSlamStop = false;
       if (!autoSpin) meta.setSpinButtonEnabled(false);
@@ -233,7 +246,10 @@ async function bootstrap(): Promise<void> {
 
       // Independently compute wins on the client and verify against server response
       const verifiedWins = verifySpinWins(config, result);
-      machine.showWins(verifiedWins, result.board, result.scatterCount >= 3);
+      const hasCustomBaseSfx = machine.showWins(verifiedWins, result.board, result.scatterCount >= 3);
+      if (result.baseGamePayout > 0 && !hasCustomBaseSfx) {
+        sound.playWin(result.baseGamePayout / getTotalBet());
+      }
 
       // Credit base game payout first
       let cumulativeWin = result.baseGamePayout;
@@ -244,6 +260,7 @@ async function bootstrap(): Promise<void> {
       // Execute awarded Free Games one by one (no wager deducted; supports retriggers)
       if (result.freeGameResults.length > 0) {
         await delay(verifiedWins.length > 0 ? 1100 : 500);
+        sound.playFreeGamesIntro();
         await freeGamesOverlay.showIntro(result.freeGamesAwarded, result.scatterCount);
 
         let bonusWin = 0;
@@ -257,6 +274,7 @@ async function bootstrap(): Promise<void> {
           // Allow Slam Stop during each Free Game spin as well
           canSlamStop = true;
           meta.setSpinButtonEnabled(true);
+          sound.playSpinStart();
           await machine.spinToStops(fg.stops);
           canSlamStop = false;
           if (!autoSpin) meta.setSpinButtonEnabled(false);
@@ -270,7 +288,10 @@ async function bootstrap(): Promise<void> {
             fg.payout,
             `Free Game #${i + 1}`,
           );
-          machine.showWins(fgWins, fg.board, fg.scatterCount >= 3);
+          const hasCustomFgSfx = machine.showWins(fgWins, fg.board, fg.scatterCount >= 3);
+          if (fg.payout > 0 && !hasCustomFgSfx) {
+            sound.playWin(fg.payout / getTotalBet());
+          }
 
           bonusWin += fg.payout;
           cumulativeWin += fg.payout;
@@ -283,6 +304,7 @@ async function bootstrap(): Promise<void> {
             await delay(fgWins.length > 0 ? 900 : 400);
             displayedTotalFg += fg.freeGamesAwarded;
             freeGamesOverlay.setCounter(i + 1, displayedTotalFg, bonusWin);
+            sound.playRetrigger();
             await freeGamesOverlay.showRetrigger(fg.freeGamesAwarded, fg.scatterCount);
           }
 
@@ -297,6 +319,7 @@ async function bootstrap(): Promise<void> {
         }
 
         freeGamesOverlay.hideCounter();
+        sound.playBonusSummary(bonusWin > 0);
         await freeGamesOverlay.showSummary(result.freeGameResults.length, bonusWin);
       }
 
@@ -315,6 +338,7 @@ async function bootstrap(): Promise<void> {
         console.error('Spin failed:', err);
       }
     } finally {
+      sound.stopSpinLoop();
       isSpinning = false;
       canSlamStop = false;
       if (autoSpin && balance >= getTotalBet()) {
@@ -337,8 +361,10 @@ async function bootstrap(): Promise<void> {
 
   meta.btnBuyBonus.on('pointertap', () => {
     if (isSpinning || autoSpin) return;
+    sound.playClick();
     buyBonusOverlay.show(getBonusBuyCost(), balance, () => {
       if (isSpinning || autoSpin) return;
+      sound.playBonusBuy();
       meta.triggerBuyBonusFlash();
       void runSpinCycle({ isBonusBuy: true });
     });

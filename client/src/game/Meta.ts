@@ -14,6 +14,7 @@ interface ButtonAnimState {
 export class Meta extends Container {
   public readonly btnBuyBonus: Container;
   public readonly btnInfo: Sprite;
+  public readonly btnSound: Container;
   public readonly btnMinus: Sprite;
   public readonly btnPlus: Sprite;
   public readonly btnMaxBet: Sprite;
@@ -25,6 +26,11 @@ export class Meta extends Container {
   private readonly buyBonusCostText: Text;
   private readonly autoBadge: Container;
   private readonly animatedButtons: ButtonAnimState[] = [];
+  private readonly soundIcon: Graphics;
+  private readonly soundRing: Graphics;
+  private soundHovered = false;
+  private soundPressed = false;
+  private soundScale = 1;
 
   // Buy Bonus button animation state
   private readonly buyBonusFlashRing: Graphics;
@@ -135,6 +141,39 @@ export class Meta extends Container {
       HUD_LAYOUT.infoBtnSize,
       HUD_LAYOUT.infoBtnSize,
     );
+
+    // --- Sound Mute / Unmute circular button next to Info ---
+    this.btnSound = new Container();
+    this.btnSound.position.set(HUD_LAYOUT.soundBtnX, HUD_LAYOUT.topY);
+    this.btnSound.eventMode = 'static';
+    this.btnSound.cursor = 'pointer';
+
+    const soundRadius = HUD_LAYOUT.soundBtnSize / 2 - 4;
+    this.soundRing = new Graphics()
+      .circle(0, 0, soundRadius)
+      .fill({ color: 0x061022, alpha: 0.96 })
+      .stroke({ color: 0x00f0ff, width: 3 });
+    this.soundIcon = new Graphics();
+    this.btnSound.addChild(this.soundRing, this.soundIcon);
+    this.addChild(this.btnSound);
+    this.setMuted(false);
+
+    this.btnSound.on('pointerover', () => {
+      this.soundHovered = true;
+    });
+    this.btnSound.on('pointerout', () => {
+      this.soundHovered = false;
+      this.soundPressed = false;
+    });
+    this.btnSound.on('pointerdown', () => {
+      this.soundPressed = true;
+    });
+    this.btnSound.on('pointerup', () => {
+      this.soundPressed = false;
+    });
+    this.btnSound.on('pointerupoutside', () => {
+      this.soundPressed = false;
+    });
 
     // --- Bottom console dock ---
     const dock = new Sprite(assets.ui.panelBottomDock);
@@ -365,6 +404,32 @@ export class Meta extends Container {
     this.buyBonusFlashProgress = 0;
   }
 
+  public setMuted(muted: boolean): void {
+    const r = HUD_LAYOUT.soundBtnSize / 2 - 4;
+    this.soundRing.clear();
+    this.soundRing
+      .circle(0, 0, r)
+      .fill({ color: 0x061022, alpha: 0.96 })
+      .stroke({ color: muted ? 0xff4d6d : 0x00f0ff, width: 3 });
+
+    const g = this.soundIcon;
+    g.clear();
+    const color = muted ? 0x8ea4be : 0x00f0ff;
+
+    // Speaker body
+    g.poly([-12, -5, -5, -5, 3, -12, 3, 12, -5, 5, -12, 5]).fill({ color });
+
+    if (muted) {
+      // Red mute X / slash
+      g.moveTo(7, -6).lineTo(15, 6).stroke({ color: 0xff4d6d, width: 2.8, cap: 'round' });
+      g.moveTo(15, -6).lineTo(7, 6).stroke({ color: 0xff4d6d, width: 2.8, cap: 'round' });
+    } else {
+      // Two glowing sound waves
+      g.arc(3, 0, 8, -0.65, 0.65).stroke({ color: 0x00f0ff, width: 2.4, cap: 'round' });
+      g.arc(3, 0, 13, -0.75, 0.75).stroke({ color: 0x00f0ff, width: 2.4, cap: 'round', alpha: 0.8 });
+    }
+  }
+
   public update(deltaSeconds: number): void {
     const dt = Math.min(deltaSeconds, 0.05);
     this.animTime += dt;
@@ -466,6 +531,11 @@ export class Meta extends Container {
     }
     this.buyBonusScale += (buyTarget - this.buyBonusScale) * lerp;
     this.btnBuyBonus.scale.set(this.buyBonusScale);
+
+    // 6. Sound button hover / press animation
+    const soundTarget = this.soundPressed ? 0.91 : this.soundHovered ? 1.07 : 1;
+    this.soundScale += (soundTarget - this.soundScale) * lerp;
+    this.btnSound.scale.set(this.soundScale);
 
     if (this.buyBonusFlashProgress < 1) {
       this.buyBonusFlashProgress = Math.min(this.buyBonusFlashProgress + dt * 3.0, 1);
